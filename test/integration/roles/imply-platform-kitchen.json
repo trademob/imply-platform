@@ -1,0 +1,33 @@
+{
+  "name": "imply-platform-kitchen",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "imply-platform": {
+      "zookeeper": {
+        "role": "zookeeper-kitchen",
+        "size": 3
+      },
+      "mariadb": {
+        "role": "galera-platform-kitchen",
+        "size": 3
+      },
+      "role": "imply-platform-kitchen",
+      "size": 3,
+      "config": {
+      }
+    }
+  },
+  "override_attributes": {
+
+  },
+  "chef_type": "role",
+  "run_list": [
+    "role[zookeeper-kitchen]",
+    "role[galera-platform-kitchen]",
+    "recipe[imply-platform]",
+    "recipe[imply-platform::tests]"
+  ],
+  "env_run_lists": {
+
+  }
+}

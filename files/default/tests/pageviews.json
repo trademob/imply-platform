@@ -1,0 +1,8 @@
+{"time": "2015-09-01T01:00:00Z", "url": "/t", "user": "bob", "latencyMs": 8}
+{"time": "2015-09-01T01:20:00Z", "url": "/b", "user": "rik", "latencyMs": 4}
+{"time": "2015-09-01T01:30:00Z", "url": "/t", "user": "cha", "latencyMs": 2}
+{"time": "2015-09-01T01:40:00Z", "url": "/b", "user": "tot", "latencyMs": 8}
+{"time": "2015-09-01T01:50:00Z", "url": "/t", "user": "her", "latencyMs": 9}
+{"time": "2015-09-01T02:20:00Z", "url": "/b", "user": "aok", "latencyMs": 1}
+{"time": "2015-09-01T02:35:00Z", "url": "/t", "user": "pol", "latencyMs": 3}
+{"time": "2015-09-01T02:40:00Z", "url": "/b", "user": "mrc", "latencyMs": 6}

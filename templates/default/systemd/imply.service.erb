@@ -1,0 +1,13 @@
+[Unit]
+Description=Imply <%= @role %>
+After=network.target
+
+[Service]
+Type=simple
+User=<%= @user %>
+Group=<%= @group %>
+ExecStart=<%= @prefix_root %>/imply/bin/supervise -c <%= @role %>
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,12 @@
+{
+  "id": "imply-platform-kitchen-1.kitchen",
+  "run_list": [ "role[imply-platform-kitchen]" ],
+  "automatic": {
+    "fqdn": "imply-platform-kitchen-1.kitchen",
+    "roles": [
+      "zookeeper-kitchen",
+      "galera-platform-kitchen",
+      "imply-platform-kitchen"
+    ]
+  }
+}

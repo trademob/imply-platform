@@ -1,0 +1,7 @@
+<% @config.each do |key, value| %>
+  <% if key =~ /jvmkey.*/ %>
+<%= value %>
+  <% else %>
+<%= key %>=<%= value %>
+  <% end %>
+<% end %>

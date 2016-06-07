@@ -1,0 +1,22 @@
+{
+  "name": "zookeeper-kitchen",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "zookeeper-platform": {
+      "role": "zookeeper-kitchen",
+      "config": {
+        "maxClientCnxns": "100"
+      }
+    }
+  },
+  "override_attributes": {
+
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[zookeeper-platform::default]"
+  ],
+  "env_run_lists": {
+
+  }
+}
