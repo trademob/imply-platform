@@ -75,5 +75,7 @@ suites:
         auto_restart: true
       galera-platform:
         initiator_id: 1
+        bootstrap_check_retry_number: 12
+        package_retries: 1
   <% end %>
 <% end %>
