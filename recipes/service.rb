@@ -23,8 +23,11 @@
     role_in_cluster =
       role_ids.include? node.run_state['imply_cluster']['my_id']
   end
-  # Node should start the role if not part of a cluster
-  role_standalone = true if role_in_cluster.nil?
+  # Node should start the role if not part of a cluster and
+  # attribute is defined
+  if role_in_cluster.nil?
+    role_standalone = node['imply-platform']['standalone']
+  end
 
   auto_restart = node['imply-platform']['auto_restart']
   if auto_restart

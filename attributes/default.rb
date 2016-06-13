@@ -181,3 +181,6 @@ default['imply-platform']['data_conf'] =
 # Query config file
 default['imply-platform']['query_conf'] =
   "#{imply_supervise_path}/query.conf"
+
+# Start all services (master,query,data) on node if true
+node.default['imply-platform']['standalone'] = false
