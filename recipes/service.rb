@@ -25,9 +25,8 @@
   end
   # Node should start the role if not part of a cluster and
   # attribute is defined
-  if role_in_cluster.nil?
-    role_standalone = node['imply-platform']['standalone']
-  end
+  role_standalone =
+    node['imply-platform']['standalone'] if role_in_cluster.nil?
 
   auto_restart = node['imply-platform']['auto_restart']
   if auto_restart
