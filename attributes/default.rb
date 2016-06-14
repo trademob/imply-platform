@@ -100,9 +100,9 @@ default['imply-platform']['druid']['config']['common_runtime_properties'] = {
   'druid.metadata.storage.connector.user' =>
     node['imply-platform']['metadata']['user']['login'],
   'druid.storage.type' => 'local',
-  'druid.storage.storageDirectory' => 'var/druid/segments',
+  'druid.storage.storageDirectory' => 'var/data/druid/segments',
   'druid.indexer.logs.type' => 'file',
-  'druid.indexer.logs.directory' => 'var/druid/indexing-logs',
+  'druid.indexer.logs.directory' => 'var/data/druid/indexing-logs',
   'druid.indexer.task.chathandler.type' => 'announce',
   'druid.selectors.indexing.serviceName' => 'druid/overlord',
   'druid.selectors.coordinator.serviceName' => 'druid/coordinator',
@@ -120,7 +120,7 @@ default['imply-platform']['druid']['config']['jvm'] = {
     '-XX:MaxDirectMemorySize' => '4096m',
     '-Duser.timezone' => 'UTC',
     '-Dfile.encoding' => 'UTF-8',
-    '-Djava.io.tmpdir' => 'var/tmp',
+    '-Djava.io.tmpdir' => 'var/query/tmp',
     '-Djava.util.logging.manager' =>
       'org.apache.logging.log4j.jul.LogManager'
   },
@@ -130,7 +130,7 @@ default['imply-platform']['druid']['config']['jvm'] = {
     'jvmkey3' => '-Xmx3g',
     '-Duser.timezone' => 'UTC',
     '-Dfile.encoding' => 'UTF-8',
-    '-Djava.io.tmpdir' => 'var/tmp',
+    '-Djava.io.tmpdir' => 'var/master/tmp',
     '-Djava.util.logging.manager' =>
       'org.apache.logging.log4j.jul.LogManager',
     '-Dderby.stream.error.file' => 'var/druid/derby.log'
@@ -141,7 +141,7 @@ default['imply-platform']['druid']['config']['jvm'] = {
     'jvmkey3' => '-Xmx8g',
     '-Duser.timezone' => 'UTC',
     '-Dfile.encoding' => 'UTF-8',
-    '-Djava.io.tmpdir' => 'var/tmp',
+    '-Djava.io.tmpdir' => 'var/data/tmp',
     '-Djava.util.logging.manager' =>
       'org.apache.logging.log4j.jul.LogManager'
   },
@@ -151,7 +151,7 @@ default['imply-platform']['druid']['config']['jvm'] = {
     'jvmkey3' => '-Xmx64m',
     '-Duser.timezone' => 'UTC',
     '-Dfile.encoding' => 'UTF-8',
-    '-Djava.io.tmpdir' => 'var/tmp',
+    '-Djava.io.tmpdir' => 'var/data/tmp',
     '-Djava.util.logging.manager' =>
       'org.apache.logging.log4j.jul.LogManager'
   },
@@ -161,7 +161,7 @@ default['imply-platform']['druid']['config']['jvm'] = {
     'jvmkey3' => '-Xmx3g',
     '-Duser.timezone' => 'UTC',
     '-Dfile.encoding' => 'UTF-8',
-    '-Djava.io.tmpdir' => 'var/tmp',
+    '-Djava.io.tmpdir' => 'var/master/tmp',
     '-Djava.util.logging.manager' =>
       'org.apache.logging.log4j.jul.LogManager'
   }
