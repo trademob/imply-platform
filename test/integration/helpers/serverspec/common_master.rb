@@ -33,11 +33,11 @@ describe 'Imply master' do
     expect(port(8090)).to be_listening
   end
 
-  describe file('/opt/imply/var/sv/coordinator.log') do
+  describe file('/opt/imply/var/master/sv/coordinator.log') do
     its(:content) { should contain 'Started @' }
   end
 
-  describe file('/opt/imply/var/sv/overlord.log') do
+  describe file('/opt/imply/var/master/sv/overlord.log') do
     its(:content) { should contain 'Started @' }
   end
 

@@ -18,7 +18,7 @@ require 'spec_helper'
 
 def wait_pivot_data
   (1..20).each do |try|
-    pivot_log = File.read('/opt/imply/var/sv/pivot.log')
+    pivot_log = File.read('/opt/imply/var/query/sv/pivot.log')
     break if pivot_log.include?("Adding Druid data source: 'pageviews'")
     puts "Waiting for pivot datasource … Try ##{try}/20, waiting 5s"
     sleep(5)
@@ -42,11 +42,11 @@ describe 'Imply query' do
     expect(port(9095)).to be_listening
   end
 
-  describe file('/opt/imply/var/sv/broker.log') do
+  describe file('/opt/imply/var/query/sv/broker.log') do
     its(:content) { should contain 'Started @' }
   end
 
-  describe file('/opt/imply/var/sv/pivot.log') do
+  describe file('/opt/imply/var/query/sv/pivot.log') do
     wait_pivot_data
     its(:content) { should contain 'load and introspection complete' }
     its(:content) { should contain "Adding Druid data source: 'pageviews'" }
