@@ -16,13 +16,13 @@
 
 # Determine role to start from node id in cluster
 %w(master data query).each do |role|
-  role_ids = node['imply-platform'][role]['ids']
-
+  my_id = node.run_state['imply_cluster']['my_id']
   role_in_cluster = nil
   unless node.run_state['imply_cluster'].nil?
     role_in_cluster =
-      role_ids.include? node.run_state['imply_cluster']['my_id']
+      node['imply-platform'][role]['ids'].include? my_id
   end
+
   # Node should start the role if not part of a cluster and
   # attribute is defined
   role_standalone =
