@@ -24,7 +24,8 @@ unit_path = node['imply-platform']['unit_path']
       user: node['imply-platform']['user'],
       group: node['imply-platform']['group'],
       prefix_root: node['imply-platform']['prefix_root'],
-      role:  node['imply-platform']["#{role}_conf"]
+      role: role,
+      role_conf:  node['imply-platform']["#{role}_conf"]
     )
     user 'root'
     group 'root'
