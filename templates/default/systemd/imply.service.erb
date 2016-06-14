@@ -6,7 +6,8 @@ After=network.target
 Type=simple
 User=<%= @user %>
 Group=<%= @group %>
-ExecStart=<%= @prefix_root %>/imply/bin/supervise -c <%= @role %>
+ExecStart=<%= @prefix_root %>/imply/bin/supervise -c <%= @role_conf%> \
+-d <%= @prefix_root %>/imply/var/<%= @role %>
 Restart=on-failure
 
 [Install]
