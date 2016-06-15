@@ -67,6 +67,16 @@ druid_config_jvm = druid_config['jvm']
   end
 end
 
+# Druid components properties
+druid_config_components = druid_config['components']
+%w(broker coordinator historical middleManager overlord).each do |component|
+  template "#{druid_config_path}/#{component}/runtime.properties" do
+    variables config: druid_config_components[component]
+    mode '0640'
+    source 'druid/runtime.properties.erb'
+  end
+end
+
 # Create default indexer logs and storage directories if storage is local
 if druid_config_common['druid.storage.type'] == 'local'
   %w(druid.indexer.logs.directory druid.storage.storageDirectory).each do |dir|
