@@ -242,3 +242,7 @@ default['imply-platform']['query_conf'] =
 
 # Start all services (master,query,data) on node if true
 node.default['imply-platform']['standalone'] = false
+
+# Config for Pivot deployed on a standalone host using pivot recipe
+node.default['imply-platform']['pivot']['port'] = 9095
+node.default['imply-platform']['pivot']['broker'] = nil
