@@ -16,17 +16,23 @@
 
 # Determine role to start from node id in cluster
 %w(master data query).each do |role|
-  my_id = node.run_state['imply_cluster']['my_id']
   role_in_cluster = nil
-  unless node.run_state['imply_cluster'].nil?
+
+  # Use ClusterSearch
+  ::Chef::Recipe.send(:include, ClusterSearch)
+
+  # Looking for members of each role in cluster
+  imply_role = cluster_search(node['imply-platform'][role])
+
+  unless imply_role.nil?
     role_in_cluster =
-      node['imply-platform'][role]['ids'].include? my_id
+      imply_role['hosts'].include? node['fqdn']
   end
 
   # Node should start the role if not part of a cluster and
   # attribute is defined
   role_standalone =
-    node['imply-platform']['standalone'] if role_in_cluster.nil?
+    imply_role['standalone'] = true if role_in_cluster.nil?
 
   auto_restart = node['imply-platform']['auto_restart']
   if auto_restart

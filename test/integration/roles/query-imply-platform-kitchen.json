@@ -1,0 +1,19 @@
+{
+  "name": "query-imply-platform-kitchen",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "imply-platform": {
+      "query": {
+        "role": "query-imply-platform-kitchen",
+        "size": 3
+      }
+    }
+  },
+  "override_attributes": {
+
+  },
+  "chef_type": "role",
+  "env_run_lists": {
+
+  }
+}

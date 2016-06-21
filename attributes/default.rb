@@ -22,9 +22,9 @@ default['imply-platform']['data_bag']['key'] = 'password'
 
 # Associate node id to role
 # Node id is defined when using the cluster-search
-default['imply-platform']['master']['ids'] = []
-default['imply-platform']['data']['ids'] = []
-default['imply-platform']['query']['ids'] = []
+default['imply-platform']['master']['role'] = 'imply-platform'
+default['imply-platform']['data']['role'] = 'imply-platform'
+default['imply-platform']['query']['role'] = 'imply-platform'
 
 # Cluster configuration with cluster-search
 # Role used by the search to find other nodes of the cluster

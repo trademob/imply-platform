@@ -54,11 +54,14 @@ suites:
     attributes:
       imply-platform:
         master:
-          ids: [1]
+          role: 'master-imply-platform-kitchen'
+          size: 3
         data:
-          ids: [2]
+          role: 'master-imply-platform-kitchen'
+          size: 3
         query:
-          ids: [3]
+          role: 'master-imply-platform-kitchen'
+          size: 3
         metadata:
             user:
               login: 'root'

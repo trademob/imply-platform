@@ -1,0 +1,19 @@
+{
+  "name": "data-imply-platform-kitchen",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "data-platform": {
+      "master": {
+        "role": "data-imply-platform-kitchen",
+        "size": 3
+      }
+    }
+  },
+  "override_attributes": {
+
+  },
+  "chef_type": "role",
+  "env_run_lists": {
+
+  }
+}
