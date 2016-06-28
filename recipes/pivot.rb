@@ -17,20 +17,18 @@
 # Set-up imply user/group for pivot
 include_recipe "#{cookbook_name}::user"
 
-# Make sure repo is installed
-execute 'install_repo' do
-  command <<-EOF
-    curl --silent --location https://rpm.nodesource.com/setup_4.x | bash -
-  EOF
-  creates '/usr/bin/node'
+# Install nodejs
+yum_repository 'nodesource' do
+  description 'NodeJS repository'
+  baseurl node['imply-platform']['nodejs']['mirror']
+  gpgkey node['imply-platform']['nodejs']['gpgkey']
+  action :create
 end
 
 # Install nodejs
-package 'nodejs' do
-  action :install
-end
+package 'nodejs'
 
-execute 'install_gulp' do
+execute 'install pivot' do
   command <<-EOF
     npm install -g imply-pivot
   EOF

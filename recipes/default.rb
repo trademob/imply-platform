@@ -14,8 +14,9 @@
 # limitations under the License.
 #
 
+include_recipe "#{cookbook_name}::search"
 include_recipe "#{cookbook_name}::user"
-include_recipe "#{cookbook_name}::repositories"
+include_recipe "#{cookbook_name}::nodejs"
 include_recipe "#{cookbook_name}::install"
 include_recipe "#{cookbook_name}::database"
 include_recipe "#{cookbook_name}::config"

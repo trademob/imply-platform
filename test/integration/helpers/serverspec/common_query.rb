@@ -17,10 +17,10 @@
 require 'spec_helper'
 
 def wait_pivot_data
-  (1..20).each do |try|
+  (1..30).each do |try|
     pivot_log = File.read('/opt/imply/var/query/sv/pivot.log')
     break if pivot_log.include?("Adding Druid data source: 'pageviews'")
-    puts "Waiting for pivot datasource … Try ##{try}/20, waiting 5s"
+    puts "Waiting for pivot datasource … Try ##{try}/30, waiting 5s"
     sleep(5)
   end
 end

@@ -73,12 +73,6 @@ default['imply-platform']['java'] = {
   'centos' => 'java-1.8.0-openjdk-headless'
 }
 
-# NodeJS package
-default['imply-platform']['nodejs']['mirror'] =
-  'https://rpm.nodesource.com/pub_4.x/el/$releasever/$basearch'
-default['imply-platform']['nodejs']['gpgkey'] =
-  'https://rpm.nodesource.com/pub/el/NODESOURCE-GPG-SIGNING-KEY-EL'
-
 # Systemd unit file path
 default['imply-platform']['unit_path'] = '/etc/systemd/system'
 
@@ -111,120 +105,6 @@ default['imply-platform']['druid']['config']['common_runtime_properties'] = {
   'druid.emitter.logging.logLevel' => 'info'
 }
 
-default['imply-platform']['druid']['config']['components']['broker'] = {
-  'druid.service' => 'druid/broker',
-  'druid.port' => 8082,
-  'druid.broker.http.numConnections' => 5,
-  'druid.server.http.numThreads' => 40,
-  'druid.processing.buffer.sizeBytes' => 536_870_912,
-  'druid.processing.numThreads' => 7,
-  'druid.broker.cache.useCache' => 'false',
-  'druid.broker.cache.populateCache' => 'false'
-}
-
-default['imply-platform']['druid']['config']['components']['coordinator'] = {
-  'druid.service' => 'druid/coordinator',
-  'druid.port' => 8081,
-  'druid.coordinator.startDelay' => 'PT30S',
-  'druid.coordinator.period' => 'PT30S'
-}
-
-default['imply-platform']['druid']['config']['components']['historical'] = {
-  'druid.service' => 'druid/historical',
-  'druid.port' => 8083,
-  'druid.server.http.numThreads' => 40,
-  'druid.processing.buffer.sizeBytes' => 536_870_912,
-  'druid.processing.numThreads' => 7,
-  'druid.segmentCache.locations' =>
-    '[{"path":"var/druid/segment-cache","maxSize"\:130000000000}]',
-  'druid.server.maxSize' => '130000000000',
-  'druid.historical.cache.useCache' => 'true',
-  'druid.historical.cache.populateCache' => 'true',
-  'druid.cache.type' => 'local',
-  'druid.cache.sizeInBytes' => 200_000_000_0
-}
-
-default['imply-platform']['druid']['config']['components']['middleManager'] = {
-  'druid.service' => 'druid/middlemanager',
-  'druid.port' => 8091,
-  'druid.worker.capacity' => 3,
-  'druid.indexer.runner.javaOpts' =>
-  '-server -Xmx2g -Duser.timezone=UTC -Dfile.encoding=UTF-8 \
-    -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager',
-  'druid.indexer.task.baseTaskDir' => 'var/druid/task',
-  'druid.indexer.task.restoreTasksOnRestart' => 'true',
-  'druid.server.http.numThreads' => 40,
-  'druid.processing.buffer.sizeBytes' => 536_870_912,
-  'druid.processing.numThreads' => 2,
-  'druid.indexer.task.hadoopWorkingPath' => 'var/druid/hadoop-tmp',
-  'druid.indexer.task.defaultHadoopCoordinates' =>
-    '["org.apache.hadoop:hadoop-client:2.3.0"]'
-}
-
-default['imply-platform']['druid']['config']['components']['overlord'] = {
-  'druid.service' => 'druid/overlord',
-  'druid.port' => 8090,
-  'druid.indexer.queue.startDelay' => 'PT30S',
-  'druid.indexer.runner.type' => 'remote',
-  'druid.indexer.storage.type' => 'metadata'
-}
-
-# Druid jvm config per component
-default['imply-platform']['druid']['config']['jvm'] = {
-  'broker' => {
-    'jvmkey1' => '-server',
-    'jvmkey2' => '-Xms24g',
-    'jvmkey3' => '-Xmx24g',
-    '-XX:MaxDirectMemorySize' => '4096m',
-    '-Duser.timezone' => 'UTC',
-    '-Dfile.encoding' => 'UTF-8',
-    '-Djava.io.tmpdir' => 'var/query/tmp',
-    '-Djava.util.logging.manager' =>
-      'org.apache.logging.log4j.jul.LogManager'
-  },
-  'coordinator' => {
-    'jvmkey1' => '-server',
-    'jvmkey2' => '-Xms3g',
-    'jvmkey3' => '-Xmx3g',
-    '-Duser.timezone' => 'UTC',
-    '-Dfile.encoding' => 'UTF-8',
-    '-Djava.io.tmpdir' => 'var/master/tmp',
-    '-Djava.util.logging.manager' =>
-      'org.apache.logging.log4j.jul.LogManager',
-    '-Dderby.stream.error.file' => 'var/druid/derby.log'
-  },
-  'historical' => {
-    'jvmkey1' => '-server',
-    'jvmkey2' => '-Xms8g',
-    'jvmkey3' => '-Xmx8g',
-    '-Duser.timezone' => 'UTC',
-    '-Dfile.encoding' => 'UTF-8',
-    '-Djava.io.tmpdir' => 'var/data/tmp',
-    '-Djava.util.logging.manager' =>
-      'org.apache.logging.log4j.jul.LogManager'
-  },
-  'middleManager' => {
-    'jvmkey1' => '-server',
-    'jvmkey2' => '-Xms64m',
-    'jvmkey3' => '-Xmx64m',
-    '-Duser.timezone' => 'UTC',
-    '-Dfile.encoding' => 'UTF-8',
-    '-Djava.io.tmpdir' => 'var/data/tmp',
-    '-Djava.util.logging.manager' =>
-      'org.apache.logging.log4j.jul.LogManager'
-  },
-  'overlord' => {
-    'jvmkey1' => '-server',
-    'jvmkey2' => '-Xms3g',
-    'jvmkey3' => '-Xmx3g',
-    '-Duser.timezone' => 'UTC',
-    '-Dfile.encoding' => 'UTF-8',
-    '-Djava.io.tmpdir' => 'var/master/tmp',
-    '-Djava.util.logging.manager' =>
-      'org.apache.logging.log4j.jul.LogManager'
-  }
-}
-
 # Supervise path includes startup scripts to easily
 # start up servers.
 imply_supervise_path =
@@ -233,16 +113,21 @@ imply_supervise_path =
 # Master config file with no zookeeper embedded
 default['imply-platform']['master_conf'] =
   "#{imply_supervise_path}/master-no-zk.conf"
-# Data config file
-default['imply-platform']['data_conf'] =
-  "#{imply_supervise_path}/data.conf"
+
 # Query config file
 default['imply-platform']['query_conf'] =
   "#{imply_supervise_path}/query.conf"
 
+# Data config file
+default['imply-platform']['data_conf'] =
+  "#{imply_supervise_path}/data.conf"
+
 # Start all services (master,query,data) on node if true
-node.default['imply-platform']['standalone'] = false
+default['imply-platform']['standalone'] = false
 
 # Config for Pivot deployed on a standalone host using pivot recipe
-node.default['imply-platform']['pivot']['port'] = 9095
-node.default['imply-platform']['pivot']['broker'] = nil
+default['imply-platform']['pivot']['port'] = 9095
+default['imply-platform']['pivot']['broker'] = nil
+
+# Auto restart services if change in a config file has been spotted
+default['imply-platform']['auto_restart'] = true

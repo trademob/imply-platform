@@ -57,10 +57,10 @@ suites:
           role: 'master-imply-platform-kitchen'
           size: 3
         data:
-          role: 'master-imply-platform-kitchen'
+          role: 'data-imply-platform-kitchen'
           size: 3
         query:
-          role: 'master-imply-platform-kitchen'
+          role: 'query-imply-platform-kitchen'
           size: 3
         metadata:
             user:
@@ -73,8 +73,8 @@ suites:
               druid.indexer.logs.directory: '/data/druid-indexing-logs'
             jvm:
               broker:
-                jvmkey2: '-Xms2g'
-                jvmkey3: '-Xmx2g'
+                -Xms: '3g'
+                -Xmx: '3g'
         auto_restart: true
       galera-platform:
         initiator_id: 1
@@ -82,17 +82,3 @@ suites:
         package_retries: 1
   <% end %>
 <% end %>
-
-  - name: imply-platform-pivot
-    driver:
-      hostname: imply-platform-kitchen-pivot.kitchen
-      container_name: imply-platform-kitchen-pivot
-      data_bags_path: "test/integration/default/data_bags"
-      encrypted_data_bag_secret_key_path: "test/integration/default/secret_key"
-    run_list:
-      - recipe[imply-platform::pivot]
-    attributes:
-      imply-platform:
-        pivot:
-          port: 9095
-          broker: "imply-platform-kitchen-3.kitchen:8082"

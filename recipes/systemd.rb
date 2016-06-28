@@ -18,6 +18,10 @@
 unit_path = node['imply-platform']['unit_path']
 
 %w(master data query).each do |role|
+  # Deploy template if node has role
+  imply_role = cluster_search(node['imply-platform'][role])
+  is_this_role = imply_role['hosts'].include? node['fqdn']
+
   template "#{unit_path}/imply-#{role}.service" do
     source 'systemd/imply.service.erb'
     variables(
@@ -30,6 +34,7 @@ unit_path = node['imply-platform']['unit_path']
     user 'root'
     group 'root'
     notifies :run, 'execute[imply-platform:reload-systemd]', :immediately
+    only_if { is_this_role }
   end
 end
 

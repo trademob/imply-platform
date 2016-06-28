@@ -14,4 +14,18 @@
 # limitations under the License.
 #
 
-require 'common_pivot'
+# Install nodejs if node have the query role defined
+if node.run_state['imply-platform']['query']
+  # Set repository for nodejs installation needed by query imply service
+  yum_repository 'nodesource' do
+    description 'NodeJS repository'
+    baseurl node['imply-platform']['nodejs']['mirror']
+    gpgkey node['imply-platform']['nodejs']['gpgkey']
+    action :create
+  end
+
+  # Install nodejs
+  package 'nodejs' do
+    action :install
+  end
+end

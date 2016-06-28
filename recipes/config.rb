@@ -19,33 +19,28 @@ imply_home = node['imply-platform']['prefix_home']
 druid_config = node['imply-platform']['druid']['config']
 druid_config_path = "#{imply_home}/imply/conf/druid"
 
-# Use ClusterSearch
-::Chef::Recipe.send(:include, ClusterSearch)
-
-# Looking for members of Imply cluster
-node.run_state['imply_cluster'] = cluster_search(node['imply-platform'])
-return if node.run_state['imply_cluster'].nil?
-
-# Looking for members of ZooKeeper cluster
-zookeeper = cluster_search(node['imply-platform']['zookeeper'])
-return if zookeeper.nil? # Not enough nodes
-zk = zookeeper['hosts'].map do |host|
-  "#{host}:2181"
-end.join(',')
-
-# Using members of MariaDB Galera cluster
+unless node.run_state['imply-platform']['metadata_servers'].nil?
+  # Using members of MariaDB Galera cluster
+  mariadb_hosts = node.run_state['imply-platform']['metadata_servers']
+end
+# Using single backend db host if not in cluster mode
 mariadb_hosts =
-  node.run_state['imply-platform']['metadata_servers']
+  node['imply-platform']['metadata']['server']['host'] if mariadb_hosts.nil?
 
-db = node.run_state['imply-platform']['metadata_db']
+# Set the database to create
+db = node['imply-platform']['metadata']['database']
 
 # Get common properties and define master Zookeeper address
 # and jdbc url
 common_runtime_properties = druid_config['common_runtime_properties'].to_hash
-common_runtime_properties['druid.zk.service.host'] = zk
+common_runtime_properties['druid.zk.service.host'] =
+  node.run_state['imply-platform']['zookeeper']
+
+# Construct the jdbc url to use with failover support
 common_runtime_properties['druid.metadata.storage.connector.connectURI'] =
   "jdbc:mysql://#{mariadb_hosts}/#{db}?failOverReadOnly=false"
 
+# Define the password to use to connect to the database
 common_runtime_properties['druid.metadata.storage.connector.password'] =
   node.run_state['imply-platform']['metadata_password']
 

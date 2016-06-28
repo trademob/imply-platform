@@ -42,7 +42,7 @@ describe 'Imply master' do
   end
 
   it 'is able to launch indexing task' do
-    post_index = 'no_proxy=localhost /opt/imply/bin/post-index-task'
+    post_index = 'no_proxy=localhost,.kitchen /opt/imply/bin/post-index-task'
     post_parameters = '--url http://localhost:8090/ --file'
     index_task = '/opt/imply/tests/test-index-task.json'
     result = `#{post_index} #{post_parameters} #{index_task} 2>&1`

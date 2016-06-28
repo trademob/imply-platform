@@ -21,13 +21,9 @@ database_type = common_properties['druid.metadata.storage.type']
 
 # Metadata credentials
 # Load password from encrypted data bag
-node.run_state['imply-platform'] = {}
 data_bag = node['imply-platform']['data_bag']
 node.run_state['imply-platform']['metadata_password'] =
-  data_bag_item(
-    data_bag['name'],
-    data_bag['item']
-  )[data_bag['key']]
+  data_bag_item(data_bag['name'], data_bag['item'])[data_bag['key']]
 
 include_recipe "database::#{database_type}" if database_type == 'postgresql'
 
@@ -43,46 +39,28 @@ db = node['imply-platform']['metadata']['database']
 
 case database_type
 when 'postgresql'
+  include_recipe "database::#{database_type}"
   postgresql_database db do
-    connection(
-      connection_parameters
-    )
+    connection connection_parameters
     action :create
   end
 when 'mysql'
-  # Looking for members of MariaDB Galera cluster
-  mariadb = cluster_search(node['imply-platform']['mariadb'])
-  return if mariadb.nil? # Not enough nodes
-  node.run_state['imply-platform']['metadata_db'] = db
-  node.run_state['imply-platform']['metadata_servers'] =
-    mariadb['hosts'].map do |host|
-      host
-    end.join(',')
+  unless node.run_state['imply-platform']['metadata_first_server'].nil?
+    host = node.run_state['imply-platform']['metadata_first_server']
+  end
+  host = node['imply-platform']['metadata']['server']['host'] if host.nil?
 
-  # Dependencies needed for mysql2 gem installation
-  %w(gcc make ruby-devel MariaDB-devel rubygems).each do |pkg|
-    package pkg do
-      action :install
-    end
+  execute 'create druid database on mariadb backend' do
+    command <<-EOF
+      mysql -h #{host} \
+      -u #{node['imply-platform']['metadata']['user']['login']} \
+      -p'#{node.run_state['imply-platform']['metadata_password']}' \
+      -e "CREATE DATABASE IF NOT EXISTS #{db} \
+      DEFAULT CHARACTER SET = UTF8 \
+      COLLATE = 'utf8_general_ci';"
+    EOF
   end
 
-  # mysql2 gem is needed to interact with mariadb server
-  chef_gem 'mysql2' do
-    compile_time false
-  end
-
-  connection_parameters = connection_parameters.to_h
-  connection_parameters['host'] =
-    node.run_state['imply-platform']['metadata_servers'][0]
-
-  # Create druid database on mysql backend
-  mysql_database db do
-    connection(
-      connection_parameters
-    )
-    encoding 'utf8'
-    action :create
-  end
 else
   raise 'The database type provided cannot be handled'
 end

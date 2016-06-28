@@ -49,8 +49,5 @@ end
 java_package = node['imply-platform']['java'][node['platform']]
 package java_package unless java_package.to_s.empty?
 
-# NodeJS package is needed by imply query service
-package 'nodejs'
-
-# Perl package is needed by supervisor/coordinator servers
+# Perl package is needed by init scripts for imply daemons
 package 'perl'

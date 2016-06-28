@@ -16,6 +16,7 @@
 
 # Define imply group
 group node['imply-platform']['group'] do
+  system true
 end
 
 # Define imply user

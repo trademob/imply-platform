@@ -10,10 +10,6 @@
       "mariadb": {
         "role": "galera-platform-kitchen",
         "size": 3
-      },
-      "role": "imply-platform-kitchen",
-      "size": 3,
-      "config": {
       }
     }
   },
