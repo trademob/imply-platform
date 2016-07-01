@@ -44,12 +44,12 @@ default['imply-platform']['mariadb']['role'] = 'mariadb-galera-cluster'
 default['imply-platform']['zookeeper']['size'] = 1
 
 # imply package
-default['imply-platform']['version'] = '1.2.1'
+default['imply-platform']['version'] = '1.3.0'
 imply_version = node['imply-platform']['version']
 
 # Checksum of imply tarball
 default['imply-platform']['checksum'] =
-  'b47195cdd20f2630ecc05e989955d3df5a0be122a0d9e14fb0f80fefa6c07a64'
+  '5f8de31500125b91d78475721cdce2c3f434d8577b9f349695b15dc7584b44bf'
 
 # imply url
 default['imply-platform']['url'] = 'http://static.imply.io/release'
