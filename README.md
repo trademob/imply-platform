@@ -32,17 +32,18 @@ choose your package by setting the package name in
 
 ### Search
 
-The recommended way to use this cookbook is through the creation of a role
-per **imply** cluster. This enables the search by role feature, allowing a
-simple service discovery.
+The recommended way to use this cookbook is through the creation of three
+roles per **imply** cluster. These roles belongs to the master, data and query
+services type offered by Imply solution.
+This enables the search by role feature, allowing a simple service discovery:
 
 In fact, there are two ways to configure the search:
 1. with a static configuration through a list of hostnames (attributes `hosts`
-   that is `['imply-platform']['hosts']`)
+   that is `['imply-platform']['master']['hosts']` for the master role)
 2. with a real search, performed on a role (attributes `role` and `size`
-   like in `['imply-platform']['role']`). The role should be in the run-list
-   of all nodes of the cluster. The size is a safety and should be the number
-   of nodes in the cluster.
+   like in `['imply-platform']['master']['role']`). The role should be in the
+   run-list of all nodes of the cluster. The size is a safety and should be
+   the number of nodes in the cluster.
 
 If hosts is configured, `role` and `size` are ignored
 
@@ -67,14 +68,17 @@ sql cluster.
 This is not in the scope of this cookbook but if you need one, you should
 consider using [Galera Platform][galera-platform].
 
+The configuration of database hosts use search and is done similarly as for
+**imply** hosts, _ie_ with a static list of hostnames or by using a search on
+a role. The attribute to configure is `['imply-platform']['database']`.
+
 ### Test
 
 This cookbook is fully tested through the installation of the full platform
 in docker hosts. This uses kitchen, docker and some monkey-patching.
 
-If you run `kitchen list`, you will see 4 suites:
+If you run `kitchen list`, you will see 3 suites:
 
-- zookeeper-centos-7
 - imply-platform-1-centos-7
 - imply-platform-2-centos-7
 - imply-platform-3-centos-7
@@ -92,33 +96,6 @@ Configuration is done by overriding default attributes. All configuration keys
 have a default defined in [attributes/default.rb](attributes/default.rb).
 Please read it to have a comprehensive view of what and how you can configure
 this cookbook behavior.
-
-Recipes
--------
-
-### default
-
-Default recipe
-
-### user
-
-Create user and group for Imply.
-
-### install
-
-Install Imply using a tarball package.
-
-### config
-
-Configure Imply, searching for other cluster members if available.
-
-### systemd
-
-Create systemd unit files
-
-### service
-
-Enable and start services
 
 Resources/Providers
 -------------------
