@@ -20,29 +20,6 @@ default['imply-platform']['data_bag']['item'] = 'mariadb-credentials'
 # Key used to load the value in data bag containing the password
 default['imply-platform']['data_bag']['key'] = 'password'
 
-# Associate node id to role
-# Node id is defined when using the cluster-search
-default['imply-platform']['master']['role'] = 'imply-platform'
-default['imply-platform']['data']['role'] = 'imply-platform'
-default['imply-platform']['query']['role'] = 'imply-platform'
-
-# Cluster configuration with cluster-search
-# Role used by the search to find other nodes of the cluster
-default['imply-platform']['role'] = 'imply-platform'
-# Hosts of the cluster, deactivate search if not empty
-default['imply-platform']['hosts'] = []
-# Expected size of the cluster. Ignored if hosts is not empty
-default['imply-platform']['size'] = 1
-
-# Zookeeper cluster
-default['imply-platform']['zookeeper']['role'] = 'zookeeper-cluster'
-default['imply-platform']['zookeeper']['hosts'] = []
-default['imply-platform']['zookeeper']['size'] = 1
-
-# MariaDB Galera clusrer
-default['imply-platform']['mariadb']['role'] = 'mariadb-galera-cluster'
-default['imply-platform']['zookeeper']['size'] = 1
-
 # imply package
 default['imply-platform']['version'] = '1.3.0'
 imply_version = node['imply-platform']['version']
@@ -79,7 +56,6 @@ default['imply-platform']['unit_path'] = '/etc/systemd/system'
 # Metadata configuration
 
 default['imply-platform']['metadata']['database'] = 'druid'
-default['imply-platform']['metadata']['server']['host'] = 'localhost'
 default['imply-platform']['metadata']['user']['login'] = 'root'
 
 # Druid common properties
@@ -121,9 +97,6 @@ default['imply-platform']['query_conf'] =
 # Data config file
 default['imply-platform']['data_conf'] =
   "#{imply_supervise_path}/data.conf"
-
-# Start all services (master,query,data) on node if true
-default['imply-platform']['standalone'] = false
 
 # Config for Pivot deployed on a standalone host using pivot recipe
 default['imply-platform']['pivot']['port'] = 9095
