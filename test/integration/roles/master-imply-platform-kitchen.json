@@ -5,7 +5,7 @@
     "imply-platform": {
       "master": {
         "role": "master-imply-platform-kitchen",
-        "size": 3
+        "size": 1
       }
     }
   },

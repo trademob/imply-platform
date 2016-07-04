@@ -7,7 +7,7 @@
         "role": "zookeeper-kitchen",
         "size": 3
       },
-      "mariadb": {
+      "database": {
         "role": "galera-platform-kitchen",
         "size": 3
       }
@@ -20,8 +20,7 @@
   "run_list": [
     "role[zookeeper-kitchen]",
     "role[galera-platform-kitchen]",
-    "recipe[imply-platform]",
-    "recipe[imply-platform::tests]"
+    "recipe[imply-platform]"
   ],
   "env_run_lists": {
 

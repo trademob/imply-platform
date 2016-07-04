@@ -52,17 +52,18 @@ suites:
     encrypted_data_bag_secret_key_path: "test/integration/default/secret_key"
     run_list:
       - role[<%= name %>-kitchen]
+      - recipe[test-imply::deploy_files]
     attributes:
       imply-platform:
         master:
           role: 'master-imply-platform-kitchen'
-          size: 3
+          size: 1
         data:
           role: 'data-imply-platform-kitchen'
-          size: 3
+          size: 1
         query:
           role: 'query-imply-platform-kitchen'
-          size: 3
+          size: 1
         metadata:
             user:
               login: 'root'

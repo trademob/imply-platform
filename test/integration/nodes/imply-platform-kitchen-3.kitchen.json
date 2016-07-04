@@ -2,8 +2,6 @@
   "id": "imply-platform-kitchen-3.kitchen",
   "run_list":[
     "role[imply-platform-kitchen]",
-    "role[master-imply-platform-kitchen]",
-    "role[data-imply-platform-kitchen]",
     "role[query-imply-platform-kitchen]"
   ],
   "automatic": {
@@ -12,8 +10,6 @@
       "zookeeper-kitchen",
       "galera-platform-kitchen",
       "imply-platform-kitchen",
-      "master-imply-platform-kitchen",
-      "data-imply-platform-kitchen",
       "query-imply-platform-kitchen"
     ]
   }
