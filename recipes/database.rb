@@ -25,32 +25,29 @@ data_bag = node['imply-platform']['data_bag']
 node.run_state['imply-platform']['metadata_password'] =
   data_bag_item(data_bag['name'], data_bag['item'])[data_bag['key']]
 
-include_recipe "database::#{database_type}" if database_type == 'postgresql'
-
-connection_parameters = {
-  host: node['imply-platform']['metadata']['server']['host'],
-  port: node['imply-platform']['metadata']['server']['port'],
-  username: node['imply-platform']['metadata']['user']['login'],
-  password: node.run_state['imply-platform']['metadata_password']
-}
-
 # Default to 'druid' database
 db = node['imply-platform']['metadata']['database']
 
 case database_type
 when 'postgresql'
+  # Use community cookbook for managing postgresql database creation
   include_recipe "database::#{database_type}"
+
+  connection_parameters = {
+    host: node.run_state['imply-platform']['metadata_first_server'],
+    port: node['imply-platform']['metadata']['server']['port'],
+    username: node['imply-platform']['metadata']['user']['login'],
+    password: node.run_state['imply-platform']['metadata_password']
+  }
+
   postgresql_database db do
     connection connection_parameters
     action :create
   end
 when 'mysql'
-  unless node.run_state['imply-platform']['metadata_first_server'].nil?
-    host = node.run_state['imply-platform']['metadata_first_server']
-  end
-  host = node['imply-platform']['metadata']['server']['host'] if host.nil?
+  host = node.run_state['imply-platform']['metadata_first_server']
 
-  execute 'create druid database on mariadb backend' do
+  execute 'create druid database on backend' do
     command <<-EOF
       mysql -h #{host} \
       -u #{node['imply-platform']['metadata']['user']['login']} \

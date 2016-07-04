@@ -16,7 +16,10 @@
 
 include_recipe "#{cookbook_name}::search"
 include_recipe "#{cookbook_name}::user"
-include_recipe "#{cookbook_name}::nodejs"
+# Include recipe if node have the query role
+if node.run_state['imply-platform']['query'].include? node['fqdn']
+  include_recipe "#{cookbook_name}::nodejs"
+end
 include_recipe "#{cookbook_name}::install"
 include_recipe "#{cookbook_name}::database"
 include_recipe "#{cookbook_name}::config"

@@ -40,30 +40,19 @@ config_files = {
   is_this_role = false
 
   # Looking for members of each role in cluster
-  imply_role =
-    cluster_search(node['imply-platform'][role])
-  unless imply_role.nil?
-    imply_hosts = imply_role['hosts']
-    is_this_role = imply_hosts.include? node['fqdn']
-  end
-
-  # Node should start the role if not part of a cluster and
-  # attribute is defined
-  has_role_standalone = node['imply-platform']['standalone']
+  imply_role = node.run_state['imply-platform'][role]
+  is_this_role = imply_role.include? node['fqdn'] if imply_role
 
   # Auto restart service if change in a template file
   auto_restart = node['imply-platform']['auto_restart']
-  if auto_restart
-    config_files[role] = config_files[role].map do |path|
-      "template[#{path}]"
-    end
-  else config_files = []
+  config_files[role] = config_files[role].map do |path|
+    "template[#{path}]"
   end
 
   # Start roles
   service "imply-#{role}" do
     action [:enable, :start]
     subscribes :restart, config_files[role] if auto_restart
-    only_if { is_this_role || has_role_standalone }
+    only_if { is_this_role }
   end
 end

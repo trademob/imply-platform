@@ -25,17 +25,24 @@ return if zookeepers.nil? # Not enough nodes
 node.run_state['imply-platform']['zookeeper'] =
   zookeepers['hosts'].map { |host| "#{host}:2181" }.join(',')
 
-# Looking for members of MySQL/MariaDB cluster
-mariadb = cluster_search(node['imply-platform']['mariadb'])
-return if mariadb.nil? # Not enough nodes
-node.run_state['imply-platform']['metadata_first_server'] = mariadb['hosts'][0]
+# Looking for members of MySQL or MariaDB cluster
+database = cluster_search(node['imply-platform']['database'])
+return if database.nil? # Not enough nodes
+node.run_state['imply-platform']['metadata_first_server'] =
+  database['hosts'].first
 
 node.run_state['imply-platform']['metadata_servers'] =
-  mariadb['hosts'].join(',')
+  database['hosts'].join(',')
 
-# Searching for nodes having the imply query role
+# Searching for nodes having the imply master/dat/query role
+imply_master = cluster_search(node['imply-platform']['master'])
+return if imply_master.nil? # Not enough nodes
+node.run_state['imply-platform']['master'] = imply_master['hosts']
+
+imply_data = cluster_search(node['imply-platform']['data'])
+return if imply_data.nil? # Not enough nodes
+node.run_state['imply-platform']['data'] = imply_data['hosts']
+
 imply_query = cluster_search(node['imply-platform']['query'])
 return if imply_query.nil? # Not enough nodes
-
-node.run_state['imply-platform']['query'] =
-  imply_query['hosts'].include? node['fqdn']
+node.run_state['imply-platform']['query'] = imply_query['hosts']

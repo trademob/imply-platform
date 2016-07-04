@@ -19,8 +19,8 @@ unit_path = node['imply-platform']['unit_path']
 
 %w(master data query).each do |role|
   # Deploy template if node has role
-  imply_role = cluster_search(node['imply-platform'][role])
-  is_this_role = imply_role['hosts'].include? node['fqdn']
+  imply_role = node.run_state['imply-platform'][role]
+  is_this_role = imply_role.include? node['fqdn'] if imply_role
 
   template "#{unit_path}/imply-#{role}.service" do
     source 'systemd/imply.service.erb'
