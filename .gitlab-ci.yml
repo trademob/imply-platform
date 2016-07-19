@@ -1,4 +1,4 @@
-# Template chef 20160606
+# Template chef 20160803
 image: sbernard/arch-kitchen-docker
 
 foodcritic:
@@ -26,11 +26,8 @@ kitchen:
     - docker
   script:
     - >
-      set +o pipefail;
-      containers=$(kitchen diagnose | grep container_name | awk '{print $2}');
-      for container in $containers; do
-        docker rm --force $container 2> /dev/null | true
+      images=$(kitchen diagnose | grep image | cut -d':' -f2);
+      for image in $images; do
+        docker pull $image
       done
-    - rm -rf .kitchen
-    - docker pull sbernard/centos-systemd-kitchen
     - kitchen test -c -d always

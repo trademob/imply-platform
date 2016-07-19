@@ -39,6 +39,7 @@ platforms:
       command: /usr/lib/systemd/systemd
       network: kitchen
       security_opt: seccomp=unconfined
+      skip_preparation: true
 
 suites:
   # Generate different types of nodes
@@ -48,8 +49,8 @@ suites:
     driver:
       hostname: <%= name %>-kitchen-<%= i %>.kitchen
       container_name: <%= name %>-kitchen-<%= i %>
-    data_bags_path: "test/integration/default/data_bags"
-    encrypted_data_bag_secret_key_path: "test/integration/default/secret_key"
+    data_bags_path: 'test/integration/default/data_bags'
+    encrypted_data_bag_secret_key_path: 'test/integration/default/secret_key'
     run_list:
       - role[<%= name %>-kitchen]
       - recipe[test-imply::deploy_files]
@@ -65,8 +66,8 @@ suites:
           role: 'query-imply-platform-kitchen'
           size: 1
         metadata:
-            user:
-              login: 'root'
+          user:
+            login: 'root'
         druid:
           config:
             common_runtime_properties:
