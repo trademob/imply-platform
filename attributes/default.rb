@@ -50,6 +50,12 @@ default['imply-platform']['java'] = {
   'centos' => 'java-1.8.0-openjdk-headless'
 }
 
+# Package to install to get mysql command, by platform
+# Only needed if external database is mysql like
+default['imply-platform']['mysql'] = {
+  'centos' => 'mariadb'
+}
+
 # Systemd unit file path
 default['imply-platform']['unit_path'] = '/etc/systemd/system'
 

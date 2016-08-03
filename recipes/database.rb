@@ -45,6 +45,12 @@ when 'postgresql'
     action :create
   end
 when 'mysql'
+  # Install mysql command
+  mysql_package = node['imply-platform']['mysql'][node['platform']]
+  package mysql_package do
+    retries node['imply-platform']['package_retries']
+  end unless mysql_package.to_s.empty?
+
   host = node.run_state['imply-platform']['metadata_first_server']
 
   execute 'create druid database on backend' do
