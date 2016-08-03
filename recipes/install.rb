@@ -15,7 +15,9 @@
 #
 
 # tar may not be installed by default
-package 'tar'
+package 'tar' do
+  retries node['imply-platform']['package_retries']
+end
 
 # Create prefix directories
 [
@@ -47,7 +49,11 @@ end
 
 # Java packages are needed by imply, can install it with package
 java_package = node['imply-platform']['java'][node['platform']]
-package java_package unless java_package.to_s.empty?
+package java_package do
+  retries node['imply-platform']['package_retries']
+end unless java_package.to_s.empty?
 
 # Perl package is needed by init scripts for imply daemons
-package 'perl'
+package 'perl' do
+  retries node['imply-platform']['package_retries']
+end

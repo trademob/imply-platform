@@ -25,4 +25,5 @@ end
 # Install nodejs
 package 'nodejs' do
   action :install
+  retries node['imply-platform']['package_retries']
 end

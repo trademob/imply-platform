@@ -104,3 +104,7 @@ default['imply-platform']['pivot']['broker'] = nil
 
 # Auto restart services if change in a config file has been spotted
 default['imply-platform']['auto_restart'] = true
+
+# Configure retries for the package resources, default = global default (0)
+# (mostly used for test purpose
+default['imply-platform']['package_retries'] = nil

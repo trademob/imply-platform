@@ -79,6 +79,9 @@ suites:
                 -Xms: '3g'
                 -Xmx: '3g'
         auto_restart: true
+        package_retries: 1
+      zookeeper-platform:
+        package_retries: 1
       galera-platform:
         initiator_id: 1
         bootstrap_check_retry_number: 12
