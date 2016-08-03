@@ -18,16 +18,9 @@
 include_recipe "#{cookbook_name}::user"
 
 # Install nodejs
-yum_repository 'nodesource' do
-  description 'NodeJS repository'
-  baseurl node['imply-platform']['nodejs']['mirror']
-  gpgkey node['imply-platform']['nodejs']['gpgkey']
-  action :create
-end
+include_recipe "#{cookbook_name}::nodejs"
 
-# Install nodejs
-package 'nodejs'
-
+# Use npm to install pivot
 execute 'install pivot' do
   command <<-EOF
     npm install -g imply-pivot
