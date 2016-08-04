@@ -40,8 +40,31 @@ platforms:
       network: kitchen
       security_opt: seccomp=unconfined
       skip_preparation: true
+      instance_host_name: true
+      instance_container_name: true
 
 suites:
+  # Install a stand-alone zookeeper
+  - name: zookeeper-imply
+    run_list:
+      - recipe[zookeeper-platform]
+    attributes:
+      zookeeper-platform:
+        hosts: localhost
+        package_retries: 1
+
+  # Install a stand-alone galera
+  - name: galera-imply
+    data_bags_path: 'test/integration/default/data_bags'
+    encrypted_data_bag_secret_key_path: 'test/integration/default/secret_key'
+    run_list:
+      - recipe[galera-platform]
+    attributes:
+      galera-platform:
+        hosts: galera-imply-centos-7
+        package_retries: 1
+        # bootstrap_check_retry_number: 12
+
   # Generate different types of nodes
 <% { 'imply-platform' => 3 }.each do |name,n| %>
   <% ("1".."#{n}").each do |i| %>
@@ -79,12 +102,6 @@ suites:
                 -Xms: '3g'
                 -Xmx: '3g'
         auto_restart: true
-        package_retries: 1
-      zookeeper-platform:
-        package_retries: 1
-      galera-platform:
-        initiator_id: 1
-        bootstrap_check_retry_number: 12
         package_retries: 1
   <% end %>
 <% end %>

@@ -15,5 +15,4 @@
 #
 
 require 'common_config'
-require 'common_services'
 require 'common_master'

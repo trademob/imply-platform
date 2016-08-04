@@ -19,7 +19,7 @@ require 'spec_helper'
 describe file('/opt/imply/conf/druid/_common/common.runtime.properties') do
   its(:content) { should contain 'druid.metadata.storage.type=mysql' }
   its(:content) { should contain 'randompass' }
-  its(:content) { should contain 'jdbc:mysql://imply-platform-kitchen-1' }
+  its(:content) { should contain 'jdbc:mysql://galera-imply-centos-7' }
   its(:content) { should contain '/data/druid-storage' }
   its(:content) { should contain '/data/druid-indexing-logs' }
 end
