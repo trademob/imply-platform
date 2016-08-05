@@ -1,0 +1,27 @@
+{
+  "name": "master-imply-kitchen",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "imply-platform": {
+      "zookeeper": {
+        "hosts": "zookeeper-imply-centos-7"
+      },
+      "database": {
+        "hosts": "galera-imply-centos-7"
+      },
+      "master": {
+        "role": "master-imply-kitchen",
+        "size": 1
+      }
+    }
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "recipe[imply-platform]"
+  ],
+  "env_run_lists": {
+
+  }
+}

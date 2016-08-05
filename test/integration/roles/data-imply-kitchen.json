@@ -1,5 +1,5 @@
 {
-  "name": "imply-platform-kitchen",
+  "name": "data-imply-kitchen",
   "json_class": "Chef::Role",
   "default_attributes": {
     "imply-platform": {
@@ -8,11 +8,14 @@
       },
       "database": {
         "hosts": "galera-imply-centos-7"
+      },
+      "data": {
+        "role": "data-imply-kitchen",
+        "size": 1
       }
     }
   },
   "override_attributes": {
-
   },
   "chef_type": "role",
   "run_list": [
