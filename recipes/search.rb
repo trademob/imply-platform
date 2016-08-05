@@ -36,13 +36,13 @@ node.run_state['imply-platform']['metadata_servers'] =
 
 # Searching for nodes having the imply master/dat/query role
 imply_master = cluster_search(node['imply-platform']['master'])
-return if imply_master.nil? # Not enough nodes
-node.run_state['imply-platform']['master'] = imply_master['hosts']
+node.run_state['imply-platform']['master'] =
+  imply_master['hosts'] if imply_master
 
 imply_data = cluster_search(node['imply-platform']['data'])
-return if imply_data.nil? # Not enough nodes
-node.run_state['imply-platform']['data'] = imply_data['hosts']
+node.run_state['imply-platform']['data'] =
+  imply_data['hosts'] if imply_data
 
 imply_query = cluster_search(node['imply-platform']['query'])
-return if imply_query.nil? # Not enough nodes
-node.run_state['imply-platform']['query'] = imply_query['hosts']
+node.run_state['imply-platform']['query'] =
+  imply_query['hosts'] if imply_query
