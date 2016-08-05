@@ -62,6 +62,8 @@ when 'mysql'
       DEFAULT CHARACTER SET = UTF8 \
       COLLATE = 'utf8_general_ci';"
     EOF
+    retries node['imply-platform']['database_creation_retries']
+    retry_delay node['imply-platform']['database_creation_retry_delay']
   end
 
 else

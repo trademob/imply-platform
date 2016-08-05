@@ -64,6 +64,10 @@ default['imply-platform']['unit_path'] = '/etc/systemd/system'
 default['imply-platform']['metadata']['database'] = 'druid'
 default['imply-platform']['metadata']['user']['login'] = 'root'
 
+# Number of retries to execute in order to perform db creation
+default['imply-platform']['database_creation_retries'] = nil
+default['imply-platform']['database_creation_retry_delay'] = nil
+
 # Druid common properties
 default['imply-platform']['druid']['config']['common_runtime_properties'] = {
   'druid.extensions.directory' => 'dist/druid/extensions',
