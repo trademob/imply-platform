@@ -63,31 +63,21 @@ suites:
       galera-platform:
         hosts: galera-imply-centos-7
         package_retries: 1
-        # bootstrap_check_retry_number: 12
 
   # Generate different types of nodes
-<% { 'imply-platform' => 3 }.each do |name,n| %>
+<% { 'master' => 1, 'data' => 1, 'query' => 1 }.each do |name, n| %>
   <% ("1".."#{n}").each do |i| %>
-  - name: <%= name %>-<%= i %>
+  - name: <%= name %>-imply-<%= i %>
     driver:
-      hostname: <%= name %>-kitchen-<%= i %>.kitchen
-      container_name: <%= name %>-kitchen-<%= i %>
+      hostname: <%= name %>-imply-kitchen-<%= i %>.kitchen
+      container_name: <%= name %>-imply-kitchen-<%= i %>
     data_bags_path: 'test/integration/default/data_bags'
     encrypted_data_bag_secret_key_path: 'test/integration/default/secret_key'
     run_list:
-      - role[<%= name %>-kitchen]
+      - role[<%= name %>-imply-kitchen]
       - recipe[test-imply::deploy_files]
     attributes:
       imply-platform:
-        master:
-          role: 'master-imply-platform-kitchen'
-          size: 1
-        data:
-          role: 'data-imply-platform-kitchen'
-          size: 1
-        query:
-          role: 'query-imply-platform-kitchen'
-          size: 1
         metadata:
           user:
             login: 'root'
@@ -103,5 +93,19 @@ suites:
                 -Xmx: '3g'
         auto_restart: true
         package_retries: 1
+        database_creation_retries: 5
+        database_creation_retry_delay: 5
   <% end %>
 <% end %>
+
+  # Install a stand-alone pivot
+  - name: pivot-imply
+    driver:
+      hostname: pivot-imply-kitchen.kitchen
+      container_name: pivot-imply-kitchen
+    run_list:
+      - recipe[imply-platform::pivot]
+    attributes:
+      imply-platform:
+        pivot:
+          broker: 'query-imply-kitchen-1.kitchen'
