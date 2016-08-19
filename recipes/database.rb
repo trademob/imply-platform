@@ -52,6 +52,8 @@ when 'mysql'
   end unless mysql_package.to_s.empty?
 
   host = node.run_state['imply-platform']['metadata_first_server']
+  login = node['imply-platform']['metadata']['user']['login']
+  password = node.run_state['imply-platform']['metadata_password']
 
   execute 'create druid database on backend' do
     command <<-EOF
@@ -64,6 +66,7 @@ when 'mysql'
     EOF
     retries node['imply-platform']['database_creation_retries']
     retry_delay node['imply-platform']['database_creation_retry_delay']
+    not_if "mysql -h #{host} -u #{login} -p'#{password}' -e 'use #{db}'"
   end
 
 else
