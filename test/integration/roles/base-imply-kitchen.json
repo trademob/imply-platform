@@ -1,0 +1,43 @@
+{
+  "name": "base-imply-kitchen",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "imply-platform": {
+      "zookeeper": {
+        "hosts": "zookeeper-imply-centos-7"
+      },
+      "database": {
+        "hosts": "galera-imply-centos-7"
+      },
+      "metadata": {
+        "user": {
+          "login": "root"
+        }
+      },
+      "druid": {
+        "config": {
+          "common_runtime_properties": {
+            "druid.metadata.storage.connector.user": "root",
+            "druid.storage.storageDirectory": "/data/druid-storage",
+            "druid.indexer.logs.directory": "/data/druid-indexing-logs"
+          },
+          "jvm": {
+            "broker": {
+              "-Xms": "3g",
+              "-Xmx": "3g"
+            }
+          }
+        }
+      }
+    }
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+
+  ],
+  "env_run_lists": {
+
+  }
+}
