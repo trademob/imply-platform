@@ -65,12 +65,9 @@ suites:
         package_retries: 1
 
   # Generate different types of nodes
-<% { 'master' => 1, 'data' => 1, 'query' => 1 }.each do |name, n| %>
+<% { 'master' => 2, 'data' => 2, 'query' => 2 }.each do |name, n| %>
   <% ("1".."#{n}").each do |i| %>
   - name: <%= name %>-imply-<%= i %>
-    driver:
-      hostname: <%= name %>-imply-kitchen-<%= i %>.kitchen
-      container_name: <%= name %>-imply-kitchen-<%= i %>
     data_bags_path: 'test/integration/default/data_bags'
     encrypted_data_bag_secret_key_path: 'test/integration/default/secret_key'
     run_list:
