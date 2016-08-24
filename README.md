@@ -77,13 +77,16 @@ a role. The attribute to configure is `['imply-platform']['database']`.
 This cookbook is fully tested through the installation of the full platform
 in docker hosts. This uses kitchen, docker and some monkey-patching.
 
-If you run `kitchen list`, you will see 3 suites:
+If you run `kitchen list`, you will see 9 suites:
 
 - zookeeper-imply-centos-7
 - galera-imply-centos-7
 - master-imply-1-centos-7
+- master-imply-2-centos-7
 - data-imply-1-centos-7
+- data-imply-2-centos-7
 - query-imply-1-centos-7
+- query-imply-2-centos-7
 - pivot-imply-centos-7
 
 Each corresponds to a different node in the cluster. They are connected through
