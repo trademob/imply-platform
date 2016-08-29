@@ -4,8 +4,15 @@ Exploratory Analytics, Scalable to Petabytes
 Description
 -----------
 
-Druid is an open source, distributed analytics data store.
-This cookbook is designed to install and configure Druid using Imply solution.
+[Druid](http://druid.io/) is an open source, high-performance, column-oriented,
+distributed data store.
+
+[Imply](https://imply.io/) is an open event analytics platform, powered by
+Druid. Explore your events through interactive visualizations, SQL, or your own
+custom applications.
+
+This cookbook is designed to install and configure Druid using Imply
+distribution.
 
 Requirements
 ------------
@@ -22,28 +29,37 @@ A *systemd* managed distribution:
 Usage
 -----
 
-### Easy Setup
+Druid need a lot of different nodes but Imply distribution sorts them in
+three main roles:
 
-By default, this cookbook installs *openjdk* from the official repositories
-*(openjdk-headless 8 on centos 7)* just before starting the service. You can
-change this behavior by setting `node['imply-platform']['java']` to `""`, or
-choose your package by setting the package name in
-`node['imply-platform']['java'][node[:platform]]`.
+- Master, everything about coordination
+- Data, all about data
+- Query, responsible for user requests
+
+To setup an Imply cluster, you need to define which nodes you want to affect
+to each role (a node may have multiple roles). This is done by the help of
+[Cluster Search][cluster-search] cookbook.
 
 ### Search
 
 The recommended way to use this cookbook is through the creation of three
-roles per **imply** cluster. These roles belongs to the master, data and query
-services type offered by Imply solution.
-This enables the search by role feature, allowing a simple service discovery:
+Chef roles per **imply** cluster, each mapping an Imply role.
 
-In fact, there are two ways to configure the search:
+This enables the search by role feature, allowing a simple service discovery.
+The search should be parametrized in attributes:
+
+- `node['imply-platform']['master']`
+- `node['imply-platform']['data']`
+- `node['imply-platform']['query']`
+
+In fact, for each there are two ways to configure the search:
+
 1. with a static configuration through a list of hostnames (attributes `hosts`
-   that is `['imply-platform']['master']['hosts']` for the master role)
+   that is `node['imply-platform']['master']['hosts']` for the master role)
 2. with a real search, performed on a role (attributes `role` and `size`
-   like in `['imply-platform']['master']['role']`). The role should be in the
-   run-list of all nodes of the cluster. The size is a safety and should be
-   the number of nodes in the cluster.
+   like in `node['imply-platform']['master']['role']`). The role should be in
+   the run-list of all nodes of the cluster. The size is a safety and should be
+   the number of nodes of this role.
 
 If hosts is configured, `role` and `size` are ignored
 
@@ -58,26 +74,36 @@ consider using [Zookeeper Platform][zookeeper-platform].
 
 The configuration of Zookeeper hosts use search and is done similarly as for
 **imply** hosts, _ie_ with a static list of hostnames or by using a search on
-a role. The attribute to configure is `['imply-platform']['zookeeper']`.
-
+a role. The attribute to configure is `node['imply-platform']['zookeeper']`.
 
 ### Metadata HA Cluster
 
-To install properly a HA **imply** cluster, you should have a metadata
-sql cluster.
+Similarly, you need also a SQL server (MariaDB or PostgreSQL) to hold Druid
+metadata.
+
 This is not in the scope of this cookbook but if you need one, you should
-consider using [Galera Platform][galera-platform].
+consider using [Galera Platform][galera-platform]. Galera is master-master
+replication system which can be applied to both MariaDB or PostgreSQL. This
+assures a truly fault-tolerant setting for Druid.
 
 The configuration of database hosts use search and is done similarly as for
 **imply** hosts, _ie_ with a static list of hostnames or by using a search on
-a role. The attribute to configure is `['imply-platform']['database']`.
+a role. The attribute to configure is `node['imply-platform']['database']`.
+
+### Java
+
+By default, this cookbook installs *openjdk* from the official repositories
+*(openjdk-headless 8 on centos 7)* just before starting the service. You can
+change this behavior by setting `node['imply-platform']['java']` to `""`, or
+choose your package by setting the package name in
+`node['imply-platform']['java'][node[:platform]]`.
 
 ### Test
 
 This cookbook is fully tested through the installation of the full platform
 in docker hosts. This uses kitchen, docker and some monkey-patching.
 
-If you run `kitchen list`, you will see 9 suites:
+If you run `kitchen list`, you will see many suites:
 
 - zookeeper-imply-centos-7
 - galera-imply-centos-7
@@ -102,6 +128,52 @@ Configuration is done by overriding default attributes. All configuration keys
 have a default defined in [attributes/default.rb](attributes/default.rb).
 Please read it to have a comprehensive view of what and how you can configure
 this cookbook behavior.
+
+Recipes
+-------
+
+### default
+
+Include search, user, nodejs (only for query nodes), install, database, config,
+systemd and service recipes (in that order).
+
+### search
+
+Performs all the required searches and store the results in
+`node.run_state['imply-platform']`. For instance, it defines a boolean for each
+imply role so they can be used by other recipes.
+
+### user
+
+Create necessary user and group which will run imply services.
+
+### nodejs
+
+Install nodejs through NodeJS official repository.
+
+### install
+
+Install Imply distribution from official tar.gz archive.
+
+### database
+
+Configure the database needed by the metadata service.
+
+### config
+
+Configure all Imply services.
+
+### systemd
+
+Install and configure Systemd services.
+
+### service
+
+Configure services (enable, start and restart).
+
+### pivot
+
+Install and configure Pivot in stand-alone mode.
 
 Resources/Providers
 -------------------

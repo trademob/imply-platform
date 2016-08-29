@@ -16,8 +16,8 @@
 
 include_recipe "#{cookbook_name}::search"
 include_recipe "#{cookbook_name}::user"
-# Include recipe if node have the query role
-if node.run_state['imply-platform']['query']
+# Include nodejs only if the node has the query role
+unless node.run_state['imply-platform']['query'].nil?
   if node.run_state['imply-platform']['query'].include? node['fqdn']
     include_recipe "#{cookbook_name}::nodejs"
   end
