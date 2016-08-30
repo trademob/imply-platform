@@ -25,6 +25,13 @@ describe 'Imply master' do
     expect(service('imply-master')).to be_enabled
   end
 
+  (1..10).each do |try|
+    out = `ss -tunl | grep -- :8081`
+    break unless out.empty?
+    puts "Waiting to master to launch… (##{try}/10)"
+    sleep(5)
+  end
+
   it 'has Druid Coordinator listening on correct port' do
     expect(port(8081)).to be_listening
   end
@@ -42,10 +49,11 @@ describe 'Imply master' do
   end
 
   it 'is able to launch indexing task' do
+    proxy = 'http_proxy="" HTTP_PROXY=""'
     post_index = 'no_proxy=localhost,.kitchen /opt/imply/bin/post-index-task'
     post_parameters = '--url http://localhost:8090/ --file'
     index_task = '/opt/imply/tests/test-index-task.json'
-    result = `#{post_index} #{post_parameters} #{index_task} 2>&1`
+    result = `#{proxy} #{post_index} #{post_parameters} #{index_task} 2>&1`
     expect(result).to include('Task finished with status: SUCCESS')
   end
 end
