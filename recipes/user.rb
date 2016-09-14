@@ -24,5 +24,5 @@ user node['imply-platform']['user'] do
   comment 'imply service account'
   group node['imply-platform']['group']
   system true
-  shell '/bin/nologin'
+  shell '/sbin/nologin'
 end
