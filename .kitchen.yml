@@ -77,19 +77,16 @@ suites:
       imply-platform:
         auto_restart: true
         package_retries: 1
-        database_creation_retries: 5
-        database_creation_retry_delay: 5
+        database_creation_retries: 20
+        database_creation_retry_delay: 10
   <% end %>
 <% end %>
 
   # Install a stand-alone pivot
-  - name: pivot-imply
-    driver:
-      hostname: pivot-imply-kitchen.kitchen
-      container_name: pivot-imply-kitchen
-    run_list:
-      - recipe[imply-platform::pivot]
-    attributes:
-      imply-platform:
-        pivot:
-          broker: 'query-imply-kitchen-1.kitchen'
+  #  - name: pivot-imply
+  #    run_list:
+  #      - recipe[imply-platform::pivot]
+  #    attributes:
+  #      imply-platform:
+  #        pivot:
+  #          broker: 'query-imply-kitchen-1.kitchen'
