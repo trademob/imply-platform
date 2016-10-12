@@ -44,6 +44,8 @@ default['imply-platform']['prefix_root'] = '/opt'
 default['imply-platform']['prefix_home'] = '/opt'
 # Where to link binaries
 default['imply-platform']['prefix_bin'] = '/opt/bin'
+# Where to log
+default['imply-platform']['log_dir'] = '/var/opt/imply/log'
 
 # Java package to install by platform
 default['imply-platform']['java'] = {
@@ -89,6 +91,55 @@ default['imply-platform']['druid']['config']['common_runtime_properties'] = {
   'druid.monitoring.monitors' => '["com.metamx.metrics.JvmMonitor"]',
   'druid.emitter' => 'logging',
   'druid.emitter.logging.logLevel' => 'info'
+}
+
+# Druid JVM common properties (will be merge in each components)
+default['imply-platform']['druid']['config']['jvm']['common'] = {
+  '-Dlog4j2.dir' => node['imply-platform']['log_dir'],
+  '-Dservice' => '%{component}'
+}
+
+# Log4j2 config for all components
+default['imply-platform']['druid']['config']['log4j2'] = {
+  'Configuration' => [{
+    'monitorInterval' => '60',
+    'Properties' => [{
+      'Property' =>
+      [
+        {
+          'name' => 'logfile.path',
+          'content' => '${sys:log4j2.dir}/${sys:service}.log'
+        }
+      ]
+    }],
+    'Appenders' => [{
+      'RollingFile' =>
+      [
+        {
+          'name' => 'A1',
+          'fileName' => '${logfile.path}',
+          'filePattern' => '${logfile.path}.%i.gz',
+          'PatternLayout' => [{
+            'pattern' => ['%d{ISO8601} %p [%t] %c - %m%n']
+          }],
+          'Policies' => [{
+            'SizeBasedTriggeringPolicy' => [{
+              'size' => '1 GB'
+            }]
+          }],
+          'DefaultRolloverStrategy' => [{
+            'max' => '9'
+          }]
+        }
+      ]
+    }],
+    'Loggers' => [{
+      'Root' => [{
+        'level' => 'info',
+        'AppenderRef' => [{ 'ref' => 'A1' }]
+      }]
+    }]
+  }]
 }
 
 # Supervise path includes startup scripts to easily

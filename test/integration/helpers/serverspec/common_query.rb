@@ -42,7 +42,7 @@ describe 'Imply query' do
     expect(port(9095)).to be_listening
   end
 
-  describe file('/opt/imply/var/query/sv/broker.log') do
+  describe file('/var/opt/imply/log/broker.log') do
     its(:content) { should contain 'Started @' }
   end
 

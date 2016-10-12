@@ -20,8 +20,7 @@ default['imply-platform']['druid']['config']['jvm']['historical'] = {
   '-Duser.timezone' => 'UTC',
   '-Dfile.encoding' => 'UTF-8',
   '-Djava.io.tmpdir' => 'var/data/tmp',
-  '-Djava.util.logging.manager' =>
-    'org.apache.logging.log4j.jul.LogManager'
+  '-Djava.util.logging.manager' => 'org.apache.logging.log4j.jul.LogManager'
 }
 default['imply-platform']['druid']['config']['jvm']['middleManager'] = {
   '-Xms' => '64m',
@@ -29,8 +28,7 @@ default['imply-platform']['druid']['config']['jvm']['middleManager'] = {
   '-Duser.timezone' => 'UTC',
   '-Dfile.encoding' => 'UTF-8',
   '-Djava.io.tmpdir' => 'var/data/tmp',
-  '-Djava.util.logging.manager' =>
-    'org.apache.logging.log4j.jul.LogManager'
+  '-Djava.util.logging.manager' => 'org.apache.logging.log4j.jul.LogManager'
 }
 
 default['imply-platform']['druid']['config']['components']['historical'] = {

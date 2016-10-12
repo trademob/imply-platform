@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe 'Imply master' do
+describe 'Imply master' do # rubocop:disable Metrics/BlockLength
   it 'is running' do
     expect(service('imply-master')).to be_running
   end
@@ -40,11 +40,11 @@ describe 'Imply master' do
     expect(port(8090)).to be_listening
   end
 
-  describe file('/opt/imply/var/master/sv/coordinator.log') do
+  describe file('/var/opt/imply/log/coordinator.log') do
     its(:content) { should contain 'Started @' }
   end
 
-  describe file('/opt/imply/var/master/sv/overlord.log') do
+  describe file('/var/opt/imply/log/overlord.log') do
     its(:content) { should contain 'Started @' }
   end
 

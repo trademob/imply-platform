@@ -35,6 +35,14 @@ end
   end
 end
 
+# Log dir owned by imply user
+directory node['imply-platform']['log_dir'] do
+  owner node['imply-platform']['user']
+  group node['imply-platform']['group']
+  recursive true
+  action :create
+end
+
 ark 'imply' do
   action :install
   url node['imply-platform']['mirror']

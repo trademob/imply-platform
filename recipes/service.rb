@@ -18,22 +18,24 @@ imply_home = node['imply-platform']['prefix_home']
 druid_config_path = "#{imply_home}/imply/conf/druid"
 
 # Change in these config files will trigger a role daemon restart
-config_files = {
-  'master' => [
-    "#{druid_config_path}/_common/common.runtime.properties",
-    "#{druid_config_path}/coordinator/jvm.config",
-    "#{druid_config_path}/overlord/jvm.config"
-  ],
-  'data' => [
-    "#{druid_config_path}/_common/common.runtime.properties",
-    "#{druid_config_path}/historical/jvm.config",
-    "#{druid_config_path}/middleManager/jvm.config"
-  ],
-  'query' => [
-    "#{druid_config_path}/_common/common.runtime.properties",
-    "#{druid_config_path}/broker/jvm.config"
-  ]
+components_per_role = {
+  'master' => %w(coordinator overlord),
+  'data' => %w(historical middleManager),
+  'query' => %w(broker)
 }
+
+config_files = components_per_role.map do |role, components|
+  components_config = components.map do |component|
+    specifics = %w(jvm.config runtime.properties).map do |file|
+      "template[#{druid_config_path}/#{component}/#{file}]"
+    end
+    commons = %w(common.runtime.properties log4j2.xml).map do |common|
+      "template[#{druid_config_path}/_common/#{common}"
+    end
+    specifics + commons
+  end
+  [role, components_config.flatten]
+end.to_h
 
 # Determine role to start from node id in cluster
 %w(master data query).each do |role|
@@ -45,9 +47,6 @@ config_files = {
 
   # Auto restart service if change in a template file
   auto_restart = node['imply-platform']['auto_restart']
-  config_files[role] = config_files[role].map do |path|
-    "template[#{path}]"
-  end
 
   # Start roles
   service "imply-#{role}" do

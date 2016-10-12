@@ -53,10 +53,13 @@ template "#{path}/_common/common.runtime.properties" do
 end
 
 # Druid jvm properties
-config_jvm = config['jvm']
+config_jvm = config['jvm'].to_h
+common = config_jvm['common']
 %w(broker coordinator historical middleManager overlord).each do |component|
+  conf = common.map { |k, v| [k, v % { component: component }] }.to_h
+  conf = conf.merge(config_jvm[component])
   template "#{path}/#{component}/jvm.config" do
-    variables config: config_jvm[component]
+    variables config: conf
     mode '0640'
     source 'druid/jvm.config.erb'
   end
@@ -81,4 +84,15 @@ if config_common['druid.storage.type'] == 'local'
       recursive true
     end
   end
+end
+
+# Log4j2 config file
+chef_gem 'xml-simple' do
+  compile_time true
+end
+
+template "#{path}/_common/log4j2.xml" do
+  variables config: node['imply-platform']['druid']['config']['log4j2']
+  mode '0644'
+  source 'xml.erb'
 end
