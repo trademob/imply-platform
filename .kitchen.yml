@@ -79,6 +79,26 @@ suites:
         package_retries: 1
         database_creation_retries: 20
         database_creation_retry_delay: 10
+        druid:
+          config:
+            components:
+              historical:
+                druid.processing.numThreads: 2
+              broker:
+                druid.processing.numThreads: 2
+            jvm:
+              coordinator:
+                -Xms: 256m
+                -Xmx: 1g
+              overlord:
+                -Xms: 256m
+                -Xmx: 1g
+              historical:
+                -Xms: 256m
+                -Xmx: 2g
+              broker:
+                -Xms: 256m
+                -Xmx: 2g
   <% end %>
 <% end %>
 
