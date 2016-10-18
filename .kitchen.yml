@@ -44,6 +44,11 @@ platforms:
       instance_container_name: true
 
 suites:
+  - name: data-volume-imply
+    driver:
+      image: sbernard/centos-chef
+      volume: /data
+
   # Install a stand-alone zookeeper
   - name: zookeeper-imply
     run_list:
@@ -70,6 +75,8 @@ suites:
   - name: <%= name %>-imply-<%= i %>
     data_bags_path: 'test/integration/default/data_bags'
     encrypted_data_bag_secret_key_path: 'test/integration/default/secret_key'
+    driver:
+      volumes_from: data-volume-imply-centos-7
     run_list:
       - role[<%= name %>-imply-kitchen]
       - recipe[test-imply::deploy_files]
