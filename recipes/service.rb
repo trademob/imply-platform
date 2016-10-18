@@ -18,40 +18,40 @@ imply_home = node['imply-platform']['prefix_home']
 druid_config_path = "#{imply_home}/imply/conf/druid"
 
 # Change in these config files will trigger a role daemon restart
-components_per_role = {
-  'master' => %w(coordinator overlord),
-  'data' => %w(historical middleManager),
-  'query' => %w(broker)
-}
+components_per_role = node['imply-platform']['components_per_role']
 
-config_files = components_per_role.map do |role, components|
-  components_config = components.map do |component|
-    specifics = %w(jvm.config runtime.properties).map do |file|
-      "template[#{druid_config_path}/#{component}/#{file}]"
-    end
-    commons = %w(common.runtime.properties log4j2.xml).map do |common|
-      "template[#{druid_config_path}/_common/#{common}"
-    end
-    specifics + commons
+config_files = components_per_role.values.flatten.map do |component|
+  specifics = %w(jvm.config runtime.properties).map do |file|
+    "template[#{druid_config_path}/#{component}/#{file}]"
   end
-  [role, components_config.flatten]
+  commons = %w(common.runtime.properties log4j2.xml).map do |common|
+    "template[#{druid_config_path}/_common/#{common}"
+  end
+  [component, specifics + commons]
 end.to_h
+config_files['pivot'] =
+  ["template[#{imply_home}/imply/conf/pivot/config.yaml]"]
 
 # Determine role to start from node id in cluster
 %w(master data query).each do |role|
-  is_this_role = false
-
-  # Looking for members of each role in cluster
+  # Install only service we need
   imply_role = node.run_state['imply-platform'][role]
-  is_this_role = imply_role.include? node['fqdn'] if imply_role
+  next unless imply_role && imply_role.include?(node['fqdn'])
 
   # Auto restart service if change in a template file
   auto_restart = node['imply-platform']['auto_restart']
 
-  # Start roles
-  service "imply-#{role}" do
-    action [:enable, :start]
-    subscribes :restart, config_files[role] if auto_restart
-    only_if { is_this_role }
+  components_per_role[role].each do |service|
+    type = 'druid'
+    if service == 'pivot'
+      type = 'pivot'
+      service == ''
+    end
+    service_name = "imply-#{type}#{"-#{service}" unless service.empty?}"
+
+    service service_name do
+      action [:enable, :start]
+      subscribes :restart, config_files[service] if auto_restart
+    end
   end
 end

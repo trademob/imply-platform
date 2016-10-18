@@ -16,25 +16,33 @@
 
 # Deploy systemd unit files
 unit_path = node['imply-platform']['unit_path']
+components_per_role = node['imply-platform']['components_per_role']
 
 %w(master data query).each do |role|
   # Deploy template if node has role
   imply_role = node.run_state['imply-platform'][role]
-  is_this_role = imply_role.include? node['fqdn'] if imply_role
+  next unless imply_role && imply_role.include?(node['fqdn'])
 
-  template "#{unit_path}/imply-#{role}.service" do
-    source 'systemd/imply.service.erb'
-    variables(
-      user: node['imply-platform']['user'],
-      group: node['imply-platform']['group'],
-      prefix_root: node['imply-platform']['prefix_root'],
-      role: role,
-      role_conf:  node['imply-platform']["#{role}_conf"]
-    )
-    user 'root'
-    group 'root'
-    notifies :run, 'execute[imply-platform:reload-systemd]', :immediately
-    only_if { is_this_role }
+  components_per_role[role].each do |service|
+    type = 'druid'
+    if service == 'pivot'
+      type = 'pivot'
+      service == ''
+    end
+    service_name = "imply-#{type}#{"-#{service}" unless service.empty?}"
+    template "#{unit_path}/#{service_name}.service" do
+      source 'systemd/imply.service.erb'
+      variables(
+        user: node['imply-platform']['user'],
+        group: node['imply-platform']['group'],
+        prefix_root: node['imply-platform']['prefix_root'],
+        type: type,
+        service: service
+      )
+      user 'root'
+      group 'root'
+      notifies :run, 'execute[imply-platform:reload-systemd]', :immediately
+    end
   end
 end
 

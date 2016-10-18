@@ -17,12 +17,14 @@
 require 'spec_helper'
 
 describe 'Imply data' do
-  it 'is running' do
-    expect(service('imply-data')).to be_running
-  end
+  %w(historical middleManager).each do |service|
+    it 'is running' do
+      expect(service("imply-druid-#{service}")).to be_running
+    end
 
-  it 'is launched at boot' do
-    expect(service('imply-data')).to be_enabled
+    it 'is launched at boot' do
+      expect(service("imply-druid-#{service}")).to be_enabled
+    end
   end
 
   it 'has Druid Historical listening on correct port' do

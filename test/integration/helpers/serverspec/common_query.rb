@@ -27,27 +27,27 @@ end
 
 describe 'Imply query' do
   it 'is running' do
-    expect(service('imply-query')).to be_running
+    expect(service('imply-druid-broker')).to be_running
   end
 
   it 'is launched at boot' do
-    expect(service('imply-query')).to be_enabled
+    expect(service('imply-druid-broker')).to be_enabled
   end
 
   it 'has Druid Broker listening on correct port' do
     expect(port(8082)).to be_listening
   end
 
-  it 'has Pivot listening on correct port' do
-    expect(port(9095)).to be_listening
-  end
+  # it 'has Pivot listening on correct port' do
+  #   expect(port(9095)).to be_listening
+  # end
 
   describe file('/var/opt/imply/log/broker.log') do
     its(:content) { should contain 'Started @' }
   end
 
-  describe file('/opt/imply/var/query/sv/pivot.log') do
-    wait_pivot_data
-    its(:content) { should contain "Adding Data Cube: 'pageviews'" }
-  end
+  # describe file('/opt/imply/var/query/sv/pivot.log') do
+  #   wait_pivot_data
+  #   its(:content) { should contain "Adding Data Cube: 'pageviews'" }
+  # end
 end

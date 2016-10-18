@@ -61,8 +61,14 @@ default['imply-platform']['mysql'] = {
 # Systemd unit file path
 default['imply-platform']['unit_path'] = '/etc/systemd/system'
 
-# Metadata configuration
+# Druid components per Imply role
+default['imply-platform']['components_per_role'] = {
+  'master' => %w(coordinator overlord),
+  'data' => %w(historical middleManager),
+  'query' => %w(broker)
+}
 
+# Metadata configuration
 default['imply-platform']['metadata']['database'] = 'druid'
 default['imply-platform']['metadata']['user']['login'] = 'root'
 
