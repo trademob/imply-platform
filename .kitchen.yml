@@ -88,6 +88,10 @@ suites:
         database_creation_retry_delay: 10
         druid:
           config:
+            common_runtime_properties:
+              druid.metadata.storage.connector.user: root
+              druid.storage.storageDirectory: /data/druid-storage
+              druid.indexer.logs.directory: /data/druid-indexing-logs
             components:
               historical:
                 druid.processing.numThreads: 2

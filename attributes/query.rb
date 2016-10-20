@@ -14,21 +14,9 @@
 # limitations under the License.
 #
 
-# NodeJS package
-default['imply-platform']['nodejs']['mirror'] =
-  'https://rpm.nodesource.com/pub_4.x/el/$releasever/$basearch'
-default['imply-platform']['nodejs']['gpgkey'] =
-  'https://rpm.nodesource.com/pub/el/NODESOURCE-GPG-SIGNING-KEY-EL'
-
 default['imply-platform']['druid']['config']['jvm']['broker'] = {
   '-Xms' => '24g',
-  '-Xmx' => '24g',
-  '-XX:MaxDirectMemorySize' => '4096m',
-  '-Duser.timezone' => 'UTC',
-  '-Dfile.encoding' => 'UTF-8',
-  '-Djava.io.tmpdir' => 'var/query/tmp',
-  '-Djava.util.logging.manager' =>
-    'org.apache.logging.log4j.jul.LogManager'
+  '-Xmx' => '24g'
 }
 
 default['imply-platform']['druid']['config']['components']['broker'] = {

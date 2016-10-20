@@ -44,8 +44,13 @@ default['imply-platform']['prefix_root'] = '/opt'
 default['imply-platform']['prefix_home'] = '/opt'
 # Where to link binaries
 default['imply-platform']['prefix_bin'] = '/opt/bin'
+# var dir
+default['imply-platform']['var_dir'] = '/var/opt/imply'
+var = node['imply-platform']['var_dir']
 # Where to log
-default['imply-platform']['log_dir'] = '/var/opt/imply/log'
+default['imply-platform']['log_dir'] = "#{var}/log"
+# Tmp dir
+default['imply-platform']['tmp_dir'] = '/tmp/imply'
 
 # Java package to install by platform
 default['imply-platform']['java'] = {
@@ -88,9 +93,9 @@ default['imply-platform']['druid']['config']['common_runtime_properties'] = {
   'druid.metadata.storage.connector.user' =>
     node['imply-platform']['metadata']['user']['login'],
   'druid.storage.type' => 'local',
-  'druid.storage.storageDirectory' => 'var/data/druid/segments',
+  'druid.storage.storageDirectory' => "#{var}/druid/segments",
   'druid.indexer.logs.type' => 'file',
-  'druid.indexer.logs.directory' => 'var/data/druid/indexing-logs',
+  'druid.indexer.logs.directory' => "#{var}/druid/indexing-logs",
   'druid.indexer.task.chathandler.type' => 'announce',
   'druid.selectors.indexing.serviceName' => 'druid/overlord',
   'druid.selectors.coordinator.serviceName' => 'druid/coordinator',
@@ -101,9 +106,13 @@ default['imply-platform']['druid']['config']['common_runtime_properties'] = {
 
 # Druid JVM common properties (will be merge in each components)
 default['imply-platform']['druid']['config']['jvm']['common'] = {
+  '-Duser.timezone' => 'UTC',
+  '-Dfile.encoding' => 'UTF-8',
+  '-Djava.io.tmpdir' => "#{node['imply-platform']['tmp_dir']}/%{component}",
+  '-Djava.util.logging.manager' => 'org.apache.logging.log4j.jul.LogManager',
   '-Dlog4j2.dir' => node['imply-platform']['log_dir'],
   '-Dlog4j2.appender' => 'file',
-  '-Dservice' => '%{component}',
+  '-Dservice' => '%{component}'
 }
 
 # Log4j2 config for all components
@@ -157,29 +166,15 @@ default['imply-platform']['druid']['config']['log4j2'] = {
   }]
 }
 
-# TODO: utiliser un var pour la ref de l'appender pour cibler console dans
-# le cas peon
-
-# Supervise path includes startup scripts to easily
-# start up servers.
-imply_supervise_path =
-  "#{node['imply-platform']['prefix_home']}/imply/conf/supervise"
-
-# Master config file with no zookeeper embedded
-default['imply-platform']['master_conf'] =
-  "#{imply_supervise_path}/master-no-zk.conf"
-
-# Query config file
-default['imply-platform']['query_conf'] =
-  "#{imply_supervise_path}/query.conf"
-
-# Data config file
-default['imply-platform']['data_conf'] =
-  "#{imply_supervise_path}/data.conf"
-
 # Config for Pivot deployed on a standalone host using pivot recipe
 default['imply-platform']['pivot']['port'] = 9095
 default['imply-platform']['pivot']['broker'] = nil
+
+# NodeJS package for pivot
+default['imply-platform']['nodejs']['mirror'] =
+  'https://rpm.nodesource.com/pub_4.x/el/$releasever/$basearch'
+default['imply-platform']['nodejs']['gpgkey'] =
+  'https://rpm.nodesource.com/pub/el/NODESOURCE-GPG-SIGNING-KEY-EL'
 
 # Auto restart services if change in a config file has been spotted
 default['imply-platform']['auto_restart'] = true

@@ -16,23 +16,12 @@
 
 default['imply-platform']['druid']['config']['jvm']['coordinator'] = {
   '-Xms' => '3g',
-  '-Xmx' => '3g',
-  '-Duser.timezone' => 'UTC',
-  '-Dfile.encoding' => 'UTF-8',
-  '-Djava.io.tmpdir' => 'var/master/tmp',
-  '-Djava.util.logging.manager' =>
-    'org.apache.logging.log4j.jul.LogManager',
-  '-Dderby.stream.error.file' => 'var/druid/derby.log'
+  '-Xmx' => '3g'
 }
 
 default['imply-platform']['druid']['config']['jvm']['overlord'] = {
   '-Xms' => '3g',
-  '-Xmx' => '3g',
-  '-Duser.timezone' => 'UTC',
-  '-Dfile.encoding' => 'UTF-8',
-  '-Djava.io.tmpdir' => 'var/master/tmp',
-  '-Djava.util.logging.manager' =>
-    'org.apache.logging.log4j.jul.LogManager'
+  '-Xmx' => '3g'
 }
 
 default['imply-platform']['druid']['config']['components']['coordinator'] = {

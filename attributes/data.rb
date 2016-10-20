@@ -16,20 +16,14 @@
 
 default['imply-platform']['druid']['config']['jvm']['historical'] = {
   '-Xms' => '8g',
-  '-Xmx' => '8g',
-  '-Duser.timezone' => 'UTC',
-  '-Dfile.encoding' => 'UTF-8',
-  '-Djava.io.tmpdir' => 'var/data/tmp',
-  '-Djava.util.logging.manager' => 'org.apache.logging.log4j.jul.LogManager'
+  '-Xmx' => '8g'
 }
 default['imply-platform']['druid']['config']['jvm']['middleManager'] = {
   '-Xms' => '64m',
-  '-Xmx' => '64m',
-  '-Duser.timezone' => 'UTC',
-  '-Dfile.encoding' => 'UTF-8',
-  '-Djava.io.tmpdir' => 'var/data/tmp',
-  '-Djava.util.logging.manager' => 'org.apache.logging.log4j.jul.LogManager'
+  '-Xmx' => '64m'
 }
+
+var = node['imply-platform']['var_dir']
 
 default['imply-platform']['druid']['config']['components']['historical'] = {
   'druid.service' => 'druid/historical',
@@ -38,16 +32,16 @@ default['imply-platform']['druid']['config']['components']['historical'] = {
   'druid.processing.buffer.sizeBytes' => 536_870_912,
   'druid.processing.numThreads' => 7,
   'druid.segmentCache.locations' =>
-    '[{"path":"var/druid/segment-cache","maxSize"\:130000000000}]',
-  'druid.server.maxSize' => '130000000000',
+    "[{\"path\":\"#{var}/druid/segment-cache\",\"maxSize\"\:130000000000}]",
+  'druid.server.maxSize' => 130_000_000_000,
   'druid.historical.cache.useCache' => 'true',
   'druid.historical.cache.populateCache' => 'true',
   'druid.cache.type' => 'local',
-  'druid.cache.sizeInBytes' => 200_000_000_0
+  'druid.cache.sizeInBytes' => 2_000_000_000
 }
 
 common = node['imply-platform']['druid']['config']['common_runtime_properties']
-log4j2dir = common['druid.indexer.logs.directory']
+logdir = common['druid.indexer.logs.directory']
 
 default['imply-platform']['druid']['config']['components']['middleManager'] = {
   'druid.service' => 'druid/middlemanager',
@@ -56,13 +50,13 @@ default['imply-platform']['druid']['config']['components']['middleManager'] = {
   'druid.indexer.runner.javaOpts' =>
   "-server -Xmx2g -Duser.timezone=UTC -Dfile.encoding=UTF-8 \
     -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager \
-    -Dservice=peon -Dlog4j2.appender=console",
-  'druid.indexer.task.baseTaskDir' => 'var/druid/task',
+    -Dservice=peon -Dlog4j2.dir=#{logdir} -Dlog4j2.appender=console",
+  'druid.indexer.task.baseTaskDir' => "#{var}/druid/task",
   'druid.indexer.task.restoreTasksOnRestart' => 'true',
   'druid.server.http.numThreads' => 40,
   'druid.processing.buffer.sizeBytes' => 536_870_912,
   'druid.processing.numThreads' => 2,
-  'druid.indexer.task.hadoopWorkingPath' => 'var/druid/hadoop-tmp',
+  'druid.indexer.task.hadoopWorkingPath' => "#{var}/druid/hadoop-tmp",
   'druid.indexer.task.defaultHadoopCoordinates' =>
     '["org.apache.hadoop:hadoop-client:2.3.0"]'
 }
