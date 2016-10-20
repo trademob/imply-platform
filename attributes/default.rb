@@ -102,7 +102,8 @@ default['imply-platform']['druid']['config']['common_runtime_properties'] = {
 # Druid JVM common properties (will be merge in each components)
 default['imply-platform']['druid']['config']['jvm']['common'] = {
   '-Dlog4j2.dir' => node['imply-platform']['log_dir'],
-  '-Dservice' => '%{component}'
+  '-Dlog4j2.appender' => 'file',
+  '-Dservice' => '%{component}',
 }
 
 # Log4j2 config for all components
@@ -122,7 +123,7 @@ default['imply-platform']['druid']['config']['log4j2'] = {
       'RollingFile' =>
       [
         {
-          'name' => 'A1',
+          'name' => 'file',
           'fileName' => '${logfile.path}',
           'filePattern' => '${logfile.path}.%i.gz',
           'PatternLayout' => [{
@@ -137,16 +138,27 @@ default['imply-platform']['druid']['config']['log4j2'] = {
             'max' => '9'
           }]
         }
+      ],
+      'Console' => [
+        {
+          'name' => 'console',
+          'PatternLayout' => [{
+            'pattern' => ['%d{ISO8601} %p [%t] %c - %m%n']
+          }]
+        }
       ]
     }],
     'Loggers' => [{
       'Root' => [{
         'level' => 'info',
-        'AppenderRef' => [{ 'ref' => 'A1' }]
+        'AppenderRef' => [{ 'ref' => '${sys:log4j2.appender}' }]
       }]
     }]
   }]
 }
+
+# TODO: utiliser un var pour la ref de l'appender pour cibler console dans
+# le cas peon
 
 # Supervise path includes startup scripts to easily
 # start up servers.

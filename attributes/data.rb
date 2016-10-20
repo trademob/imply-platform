@@ -46,13 +46,17 @@ default['imply-platform']['druid']['config']['components']['historical'] = {
   'druid.cache.sizeInBytes' => 200_000_000_0
 }
 
+common = node['imply-platform']['druid']['config']['common_runtime_properties']
+log4j2dir = common['druid.indexer.logs.directory']
+
 default['imply-platform']['druid']['config']['components']['middleManager'] = {
   'druid.service' => 'druid/middlemanager',
   'druid.port' => 8091,
   'druid.worker.capacity' => 3,
   'druid.indexer.runner.javaOpts' =>
-  '-server -Xmx2g -Duser.timezone=UTC -Dfile.encoding=UTF-8 \
-    -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager',
+  "-server -Xmx2g -Duser.timezone=UTC -Dfile.encoding=UTF-8 \
+    -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager \
+    -Dservice=peon -Dlog4j2.appender=console",
   'druid.indexer.task.baseTaskDir' => 'var/druid/task',
   'druid.indexer.task.restoreTasksOnRestart' => 'true',
   'druid.server.http.numThreads' => 40,
