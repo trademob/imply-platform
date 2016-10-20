@@ -100,8 +100,8 @@ default['imply-platform']['druid']['config']['common_runtime_properties'] = {
   'druid.selectors.indexing.serviceName' => 'druid/overlord',
   'druid.selectors.coordinator.serviceName' => 'druid/coordinator',
   'druid.monitoring.monitors' => '["com.metamx.metrics.JvmMonitor"]',
-  'druid.emitter' => 'logging',
-  'druid.emitter.logging.logLevel' => 'info'
+  'druid.emitter' => 'noop',
+  'druid.emitter.logging.logLevel' => 'debug'
 }
 
 # Druid JVM common properties (will be merge in each components)
