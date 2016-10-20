@@ -50,6 +50,8 @@ template "#{path}/_common/common.runtime.properties" do
   variables config: common_runtime_properties
   mode '0640'
   source 'druid/common.runtime.properties.erb'
+  user node['imply-platform']['user']
+  group node['imply-platform']['group']
 end
 
 # Druid jvm properties
@@ -62,6 +64,8 @@ common = config_jvm['common']
     variables config: conf
     mode '0640'
     source 'druid/jvm.config.erb'
+    user node['imply-platform']['user']
+    group node['imply-platform']['group']
   end
 end
 
@@ -72,6 +76,8 @@ config_components = config['components']
     variables config: config_components[component]
     mode '0640'
     source 'druid/runtime.properties.erb'
+    user node['imply-platform']['user']
+    group node['imply-platform']['group']
   end
 end
 
@@ -95,4 +101,6 @@ template "#{path}/_common/log4j2.xml" do
   variables config: node['imply-platform']['druid']['config']['log4j2']
   mode '0644'
   source 'xml.erb'
+  user node['imply-platform']['user']
+  group node['imply-platform']['group']
 end

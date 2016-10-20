@@ -21,8 +21,6 @@ imply_home = node['imply-platform']['prefix_home']
 
 remote_directory "#{imply_home}/imply/tests" do
   source 'tests'
-  owner node['imply-platform']['user']
-  group node['imply-platform']['group']
   mode '0755'
   action :create
 end

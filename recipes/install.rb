@@ -62,7 +62,6 @@ ark 'imply' do
   has_binaries []
   checksum node['imply-platform']['checksum']
   version node['imply-platform']['version']
-  owner node['imply-platform']['user']
 end
 
 # Java packages are needed by imply, can install it with package
