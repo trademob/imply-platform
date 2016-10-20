@@ -34,9 +34,8 @@ module Kitchen
         if %i(destroy test create converge).include? action
           send("run_#{action}".to_sym,
                instances, services, helpers, args.first)
-        else
-          run_converge(instances, services, helpers) if action == :verify
-          run_action_official(action, instances, *args) if action != :create
+        elsif action != :create
+          run_action_official(action, instances, *args)
         end
       end
 
