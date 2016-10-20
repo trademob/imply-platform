@@ -35,12 +35,22 @@ end
   end
 end
 
-# Log dir owned by imply user
-directory node['imply-platform']['log_dir'] do
-  owner node['imply-platform']['user']
-  group node['imply-platform']['group']
-  recursive true
-  action :create
+# var, tmp and log dir owned by imply user
+dirs = []
+dirs << node['imply-platform']['var_dir']
+tmp = node['imply-platform']['tmp_dir']
+dirs << tmp
+components_per_role = node['imply-platform']['components_per_role']
+dirs += components_per_role.values.flatten.uniq.map { |c| "#{tmp}/#{c}" }
+dirs << node['imply-platform']['log_dir']
+
+dirs.each do |dir|
+  directory dir do
+    owner node['imply-platform']['user']
+    group node['imply-platform']['group']
+    recursive true
+    action :create
+  end
 end
 
 ark 'imply' do

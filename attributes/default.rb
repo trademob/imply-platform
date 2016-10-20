@@ -50,7 +50,7 @@ var = node['imply-platform']['var_dir']
 # Where to log
 default['imply-platform']['log_dir'] = "#{var}/log"
 # Tmp dir
-default['imply-platform']['tmp_dir'] = '/tmp/imply'
+default['imply-platform']['tmp_dir'] = "#{var}/tmp"
 
 # Java package to install by platform
 default['imply-platform']['java'] = {
