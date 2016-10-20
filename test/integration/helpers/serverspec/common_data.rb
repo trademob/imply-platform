@@ -27,6 +27,9 @@ describe 'Imply data' do
     end
   end
 
+  wait_service('historical', 8083)
+  wait_service('middleManager', 8091)
+
   it 'has Druid Historical listening on correct port' do
     expect(port(8083)).to be_listening
   end

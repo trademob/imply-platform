@@ -34,6 +34,8 @@ describe 'Imply query' do
     expect(service('imply-druid-broker')).to be_enabled
   end
 
+  wait_service('broker', 8082)
+
   it 'has Druid Broker listening on correct port' do
     expect(port(8082)).to be_listening
   end

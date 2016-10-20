@@ -27,12 +27,8 @@ describe 'Imply master' do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  (1..10).each do |try|
-    out = `ss -tunl | grep -- :8081`
-    break unless out.empty?
-    puts "Waiting to master to launch… (##{try}/10)"
-    sleep(5)
-  end
+  wait_service('coordinator', 8081)
+  wait_service('overlord', 8090)
 
   it 'has Druid Coordinator listening on correct port' do
     expect(port(8081)).to be_listening
