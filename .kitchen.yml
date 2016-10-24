@@ -70,7 +70,9 @@ suites:
         package_retries: 1
 
   # Generate different types of nodes
-<% { 'master' => 2, 'data' => 2, 'query' => 2 }.each do |name, n| %>
+<% {
+  'master' => 2, 'data' => 2, 'query' => 2, 'client' => 1
+  }.each do |name, n| %>
   <% ("1".."#{n}").each do |i| %>
   - name: <%= name %>-imply-<%= i %>
     data_bags_path: 'test/integration/default/data_bags'
@@ -97,6 +99,10 @@ suites:
                 druid.processing.numThreads: 2
               broker:
                 druid.processing.numThreads: 2
+              pivot:
+                clusters:
+                  druid:
+                    host: 'query-imply-1-centos-7:8082'
             jvm:
               coordinator:
                 -Xms: 256m

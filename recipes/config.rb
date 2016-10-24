@@ -98,9 +98,20 @@ chef_gem 'xml-simple' do
 end
 
 template "#{path}/_common/log4j2.xml" do
-  variables config: node['imply-platform']['druid']['config']['log4j2']
+  variables config: config['log4j2']
   mode '0644'
   source 'xml.erb'
   user node['imply-platform']['user']
   group node['imply-platform']['group']
+end
+
+pivot_conf = config['components']['pivot'].to_hash
+pivot_conf['clusters'] = pivot_conf['clusters'].map do |name, values|
+  { 'name' => name }.merge(values)
+end
+# Pivot yaml file
+template "#{imply_home}/imply/conf/pivot/config.yaml" do
+  variables config: pivot_conf
+  mode '0644'
+  source 'yaml.erb'
 end

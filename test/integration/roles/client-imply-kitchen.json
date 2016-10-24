@@ -1,0 +1,22 @@
+{
+  "name": "client-imply-kitchen",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "imply-platform": {
+      "client": {
+        "role": "client-imply-kitchen",
+        "size": 1
+      }
+    }
+  },
+  "override_attributes": {
+  },
+  "chef_type": "role",
+  "run_list": [
+    "role[base-imply-kitchen]",
+    "recipe[imply-platform]"
+  ],
+  "env_run_lists": {
+
+  }
+}

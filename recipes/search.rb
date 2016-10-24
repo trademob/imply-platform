@@ -17,7 +17,8 @@
 # Use ClusterSearch
 ::Chef::Recipe.send(:include, ClusterSearch)
 
-node.run_state['imply-platform'] = {}
+node.run_state['imply-platform'] ||= {}
+node.run_state['imply-platform']['my_roles'] = []
 
 # Looking for members of ZooKeeper cluster
 zookeepers = cluster_search(node['imply-platform']['zookeeper'])
@@ -34,15 +35,12 @@ node.run_state['imply-platform']['metadata_first_server'] =
 node.run_state['imply-platform']['metadata_servers'] =
   database['hosts'].join(',')
 
-# Searching for nodes having the imply master/dat/query role
-imply_master = cluster_search(node['imply-platform']['master'])
-node.run_state['imply-platform']['master'] =
-  imply_master['hosts'] if imply_master
-
-imply_data = cluster_search(node['imply-platform']['data'])
-node.run_state['imply-platform']['data'] =
-  imply_data['hosts'] if imply_data
-
-imply_query = cluster_search(node['imply-platform']['query'])
-node.run_state['imply-platform']['query'] =
-  imply_query['hosts'] if imply_query
+# Searching for nodes having the imply master/data/query/client role
+%w(master data query client).each do |role|
+  imply_role = cluster_search(node['imply-platform'][role])
+  next unless imply_role
+  node.run_state['imply-platform'][role] = imply_role['hosts']
+  if imply_role['hosts'].include?(node['fqdn'])
+    node.run_state['imply-platform']['my_roles'] << role
+  end
+end

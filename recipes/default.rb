@@ -16,14 +16,18 @@
 
 include_recipe "#{cookbook_name}::search"
 include_recipe "#{cookbook_name}::user"
-# Include nodejs only if the node has the query role
-unless node.run_state['imply-platform']['query'].nil?
-  if node.run_state['imply-platform']['query'].include? node['fqdn']
-    include_recipe "#{cookbook_name}::nodejs"
-  end
-end
 include_recipe "#{cookbook_name}::install"
-include_recipe "#{cookbook_name}::database"
+
+# Install nodejs for clients
+if node.run_state['imply-platform']['my_roles'].include?('client')
+  include_recipe "#{cookbook_name}::nodejs"
+end
+
+# Connect to database for others
+unless (node.run_state['imply-platform']['my_roles'] - ['client']).empty?
+  include_recipe "#{cookbook_name}::database"
+end
+
 include_recipe "#{cookbook_name}::config"
 include_recipe "#{cookbook_name}::systemd"
 include_recipe "#{cookbook_name}::service"

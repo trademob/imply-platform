@@ -69,8 +69,3 @@ java_package = node['imply-platform']['java'][node['platform']]
 package java_package do
   retries node['imply-platform']['package_retries']
 end unless java_package.to_s.empty?
-
-# Perl package is needed by init scripts for imply daemons
-package 'perl' do
-  retries node['imply-platform']['package_retries']
-end

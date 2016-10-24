@@ -16,16 +16,33 @@
 
 require 'spec_helper'
 
+def wait_pivot_data(cmd)
+  (1..24).each do |try|
+    output = `#{cmd}`
+    break if output.include?("Adding Data Cube: 'pageviews'")
+    puts "Waiting for pivot datasource… Try ##{try}/24, waiting 5s"
+    sleep(5)
+  end
+end
+
 describe 'Imply Pivot' do
   it 'is running' do
-    expect(service('pivot')).to be_running
+    expect(service('imply-pivot')).to be_running
   end
 
   it 'is launched at boot' do
-    expect(service('pivot')).to be_enabled
+    expect(service('imply-pivot')).to be_enabled
   end
+
+  wait_service('pivot', 9095)
 
   it 'has Pivot listening on correct port' do
     expect(port(9095)).to be_listening
+  end
+
+  it 'should have added a data cube' do
+    cmd = 'journalctl -u imply-pivot | grep "Adding Data Cube: \'pageviews\'"'
+    wait_pivot_data(cmd)
+    expect(command(cmd).exit_status).to eq(0)
   end
 end

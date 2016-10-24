@@ -70,7 +70,8 @@ default['imply-platform']['unit_path'] = '/etc/systemd/system'
 default['imply-platform']['components_per_role'] = {
   'master' => %w(coordinator overlord),
   'data' => %w(historical middleManager),
-  'query' => %w(broker)
+  'query' => %w(broker),
+  'client' => %w(pivot)
 }
 
 # Metadata configuration

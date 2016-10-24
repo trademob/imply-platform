@@ -20,37 +20,31 @@
 # fall-back to hostname listing if user does not want to rely on searches
 # (because of chef-solo for example).
 
-# Role used by the search to find other master nodes of the cluster
-default['imply-platform']['master']['role'] = 'imply-platform'
-# Master hosts of the cluster, deactivate search if not empty
+# In the following bloc of 3 lines:
+# - role is the target role for the search
+# - unempty hosts deactivates search, it's the member list of the cluster
+# - size is the expected size of the searched cluster, ignored if hosts is used
+
+default['imply-platform']['master']['role'] = 'master-imply-platform'
 default['imply-platform']['master']['hosts'] = []
-# Expected size of the master cluster. Ignored if hosts is not empty
 default['imply-platform']['master']['size'] = 1
 
-# Role used by the search to find other data nodes of the cluster
-default['imply-platform']['data']['role'] = 'imply-platform'
-# Data hosts of the cluster, deactivate search if not empty
+default['imply-platform']['data']['role'] = 'data-imply-platform'
 default['imply-platform']['data']['hosts'] = []
-# Expected size of the data cluster. Ignored if hosts is not empty
 default['imply-platform']['data']['size'] = 1
 
-# Role used by the search to find other query nodes of the cluster
-default['imply-platform']['query']['role'] = 'imply-platform'
-# Query hosts of the cluster, deactivate search if not empty
+default['imply-platform']['query']['role'] = 'query-imply-platform'
 default['imply-platform']['query']['hosts'] = []
-# Expected size of the query cluster. Ignored if hosts is not empty
 default['imply-platform']['query']['size'] = 1
 
-# Role used by the search to find other zookeeper nodes of the cluster
+default['imply-platform']['client']['role'] = 'client-imply-platform'
+default['imply-platform']['client']['hosts'] = []
+default['imply-platform']['client']['size'] = 1
+
 default['imply-platform']['zookeeper']['role'] = 'zookeeper-cluster'
-# Zookeeper hosts of the cluster, deactivate search if not empty
 default['imply-platform']['zookeeper']['hosts'] = []
-# Expected size of the zookeeper cluster. Ignored if hosts is not empty
 default['imply-platform']['zookeeper']['size'] = 1
 
-# Role used by the search to find other database nodes of the cluster
 default['imply-platform']['database']['role'] = 'mariadb-galera-cluster'
-# database hosts of the cluster, deactivate search if not empty
 default['imply-platform']['database']['hosts'] = []
-# Expected size of the database cluster. Ignored if hosts is not empty
 default['imply-platform']['database']['size'] = 1

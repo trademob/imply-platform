@@ -33,7 +33,7 @@ config_files['pivot'] =
   ["template[#{imply_home}/imply/conf/pivot/config.yaml]"]
 
 # Determine role to start from node id in cluster
-%w(master data query).each do |role|
+%w(master data query client).each do |role|
   # Install only service we need
   imply_role = node.run_state['imply-platform'][role]
   next unless imply_role && imply_role.include?(node['fqdn'])
@@ -42,12 +42,8 @@ config_files['pivot'] =
   auto_restart = node['imply-platform']['auto_restart']
 
   components_per_role[role].each do |service|
-    type = 'druid'
-    if service == 'pivot'
-      type = 'pivot'
-      service == ''
-    end
-    service_name = "imply-#{type}#{"-#{service}" unless service.empty?}"
+    service_name = "imply-druid-#{service}"
+    service_name = "imply-#{service}" if service == 'pivot'
 
     service service_name do
       action [:enable, :start]

@@ -14,24 +14,15 @@
 # limitations under the License.
 #
 
-require 'spec_helper'
-
-describe 'Imply query' do
-  it 'is running' do
-    expect(service('imply-druid-broker')).to be_running
-  end
-
-  it 'is launched at boot' do
-    expect(service('imply-druid-broker')).to be_enabled
-  end
-
-  wait_service('broker', 8082)
-
-  it 'has Druid Broker listening on correct port' do
-    expect(port(8082)).to be_listening
-  end
-
-  describe file('/var/opt/imply/log/broker.log') do
-    its(:content) { should contain 'Started @' }
-  end
-end
+default['imply-platform']['druid']['config']['components']['pivot'] = {
+  'port' => 9095,
+  'clusters' => {
+    'druid' => { # key is used as name (better than array)
+      'type' => 'druid',
+      'host' => 'localhost:8082',
+      'sourceListRefreshInterval' => 30_000,
+      'sourceListRefreshOnLoad' => false
+    }
+  },
+  dataSources: []
+}
