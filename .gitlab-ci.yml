@@ -1,9 +1,9 @@
-# Template chef 20160803
+# Template chef 20160914
 image: sbernard/arch-kitchen-docker
 
 foodcritic:
   script:
-    - foodcritic .
+    - foodcritic -f any .
 
 rubocop:
   script:
