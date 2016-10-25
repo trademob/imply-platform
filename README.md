@@ -35,6 +35,7 @@ three main roles:
 - Master, everything about coordination
 - Data, all about data
 - Query, responsible for user requests
+- Client (actually not an officiel Imply role) for clients like pivot
 
 To setup an Imply cluster, you need to define which nodes you want to affect
 to each role (a node may have multiple roles). This is done by the help of
@@ -42,8 +43,8 @@ to each role (a node may have multiple roles). This is done by the help of
 
 ### Search
 
-The recommended way to use this cookbook is through the creation of three
-Chef roles per **imply** cluster, each mapping an Imply role.
+The recommended way to use this cookbook is through the creation of four
+Chef roles per Imply cluster, each mapping an Imply role.
 
 This enables the search by role feature, allowing a simple service discovery.
 The search should be parametrized in attributes:
@@ -51,6 +52,7 @@ The search should be parametrized in attributes:
 - `node['imply-platform']['master']`
 - `node['imply-platform']['data']`
 - `node['imply-platform']['query']`
+- `node['imply-platform']['client']`
 
 In fact, for each there are two ways to configure the search:
 
@@ -63,17 +65,22 @@ In fact, for each there are two ways to configure the search:
 
 If hosts is configured, `role` and `size` are ignored
 
-See [roles](test/integration/roles) for some examples and
-[Cluster Search][cluster-search] documentation for more information.
+See [.kitchen.yml](.kitchen.yml) and [roles](test/integration/roles) for some
+examples and [Cluster Search][cluster-search] documentation for more
+information.
+
+Note that if you want a simple (and static, ie without search) configuration
+of your Imply cluster, you can use only one role declaring all your nodes
+with **hosts** attributes.
 
 ### Zookeeper HA Cluster
 
-To install properly a HA **imply** cluster, you need a **Zookeeper** cluster.
+To install properly a HA Imply cluster, you need a **Zookeeper** cluster.
 This is not in the scope of this cookbook but if you need one, you should
 consider using [Zookeeper Platform][zookeeper-platform].
 
 The configuration of Zookeeper hosts use search and is done similarly as for
-**imply** hosts, _ie_ with a static list of hostnames or by using a search on
+Imply hosts, _ie_ with a static list of hostnames or by using a search on
 a role. The attribute to configure is `node['imply-platform']['zookeeper']`.
 
 ### Metadata HA Cluster
@@ -87,7 +94,7 @@ replication system which can be applied to both MariaDB or PostgreSQL. This
 assures a truly fault-tolerant setting for Druid.
 
 The configuration of database hosts use search and is done similarly as for
-**imply** hosts, _ie_ with a static list of hostnames or by using a search on
+Imply hosts, _ie_ with a static list of hostnames or by using a search on
 a role. The attribute to configure is `node['imply-platform']['database']`.
 
 ### Java
@@ -105,6 +112,7 @@ in docker hosts. This uses kitchen, docker and some monkey-patching.
 
 If you run `kitchen list`, you will see many suites:
 
+- data-volume-imply-centos-7 (to have a shared /data)
 - zookeeper-imply-centos-7
 - galera-imply-centos-7
 - master-imply-1-centos-7
@@ -113,7 +121,7 @@ If you run `kitchen list`, you will see many suites:
 - data-imply-2-centos-7
 - query-imply-1-centos-7
 - query-imply-2-centos-7
-- pivot-imply-centos-7
+- client-imply-1-centos-7
 
 Each corresponds to a different node in the cluster. They are connected through
 a bridge network named *kitchen*, which is created if necessary.
@@ -134,18 +142,18 @@ Recipes
 
 ### default
 
-Include search, user, nodejs (only for query nodes), install, database, config,
-systemd and service recipes (in that order).
+Include search, user, install, nodejs (only for client nodes), database (except
+for client only nodes), config, systemd and service recipes (in that order).
 
 ### search
 
 Performs all the required searches and store the results in
 `node.run_state['imply-platform']`. For instance, it defines a boolean for each
-imply role so they can be used by other recipes.
+Imply role so they can be used by other recipes.
 
 ### user
 
-Create necessary user and group which will run imply services.
+Create necessary user and group which will run Imply services.
 
 ### nodejs
 
@@ -170,10 +178,6 @@ Install and configure Systemd services.
 ### service
 
 Configure services (enable, start and restart).
-
-### pivot
-
-Install and configure Pivot in stand-alone mode.
 
 Resources/Providers
 -------------------
