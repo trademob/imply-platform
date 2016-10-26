@@ -118,12 +118,3 @@ suites:
                 -Xmx: 2g
   <% end %>
 <% end %>
-
-  # Install a stand-alone pivot
-  #  - name: pivot-imply
-  #    run_list:
-  #      - recipe[imply-platform::pivot]
-  #    attributes:
-  #      imply-platform:
-  #        pivot:
-  #          broker: 'query-imply-kitchen-1.kitchen'
