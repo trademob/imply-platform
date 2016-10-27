@@ -77,6 +77,7 @@ default['imply-platform']['components_per_role'] = {
 # Metadata configuration
 default['imply-platform']['metadata']['database'] = 'druid'
 default['imply-platform']['metadata']['user']['login'] = 'root'
+default['imply-platform']['metadata']['server']['port'] = 3306
 
 # Number of retries to execute in order to perform db creation
 default['imply-platform']['database_creation_retries'] = nil

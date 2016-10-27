@@ -23,9 +23,6 @@ unless node.run_state['imply-platform']['metadata_servers'].nil?
   # Using members of DB cluster
   database_hosts = node.run_state['imply-platform']['metadata_servers']
 end
-# Using single backend db host if not in cluster mode
-database_hosts =
-  node['imply-platform']['metadata']['server']['host'] if database_hosts.nil?
 
 # Set the database to create
 db = node['imply-platform']['metadata']['database']

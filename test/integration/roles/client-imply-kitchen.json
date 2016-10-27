@@ -6,6 +6,19 @@
       "client": {
         "role": "client-imply-kitchen",
         "size": 1
+      },
+      "druid": {
+        "config": {
+          "components": {
+            "pivot": {
+              "clusters": {
+                "druid": {
+                  "host": "query-imply-1-centos-7:8082"
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
@@ -13,7 +26,6 @@
   },
   "chef_type": "role",
   "run_list": [
-    "role[base-imply-kitchen]",
     "recipe[imply-platform]"
   ],
   "env_run_lists": {

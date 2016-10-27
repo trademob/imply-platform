@@ -99,10 +99,6 @@ suites:
                 druid.processing.numThreads: 2
               broker:
                 druid.processing.numThreads: 2
-              pivot:
-                clusters:
-                  druid:
-                    host: 'query-imply-1-centos-7:8082'
             jvm:
               coordinator:
                 -Xms: 256m

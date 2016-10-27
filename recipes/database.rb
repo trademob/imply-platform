@@ -28,16 +28,21 @@ node.run_state['imply-platform']['metadata_password'] =
 # Default to 'druid' database
 db = node['imply-platform']['metadata']['database']
 
+host = node.run_state['imply-platform']['metadata_first_server']
+port = node['imply-platform']['metadata']['server']['port']
+login = node['imply-platform']['metadata']['user']['login']
+password = node.run_state['imply-platform']['metadata_password']
+
 case database_type
 when 'postgresql'
   # Use community cookbook for managing postgresql database creation
   include_recipe "database::#{database_type}"
 
   connection_parameters = {
-    host: node.run_state['imply-platform']['metadata_first_server'],
-    port: node['imply-platform']['metadata']['server']['port'],
-    username: node['imply-platform']['metadata']['user']['login'],
-    password: node.run_state['imply-platform']['metadata_password']
+    host: host,
+    port: port,
+    username: login,
+    password: password
   }
 
   postgresql_database db do
@@ -51,13 +56,9 @@ when 'mysql'
     retries node['imply-platform']['package_retries']
   end unless mysql_package.to_s.empty?
 
-  host = node.run_state['imply-platform']['metadata_first_server']
-  login = node['imply-platform']['metadata']['user']['login']
-  password = node.run_state['imply-platform']['metadata_password']
-
   execute 'create druid database on backend' do
     command <<-EOF
-      mysql -h #{host} \
+      mysql -h #{host} --port #{port} \
       -u #{node['imply-platform']['metadata']['user']['login']} \
       -p'#{node.run_state['imply-platform']['metadata_password']}' \
       -e "CREATE DATABASE IF NOT EXISTS #{db} \

@@ -20,6 +20,16 @@
 node.run_state['imply-platform'] ||= {}
 node.run_state['imply-platform']['my_roles'] = []
 
+# Searching for nodes having the imply master/data/query/client role
+%w(master data query client).each do |role|
+  imply_role = cluster_search(node['imply-platform'][role])
+  next unless imply_role
+  node.run_state['imply-platform'][role] = imply_role['hosts']
+  if imply_role['hosts'].include?(node['fqdn'])
+    node.run_state['imply-platform']['my_roles'] << role
+  end
+end
+
 # Looking for members of ZooKeeper cluster
 zookeepers = cluster_search(node['imply-platform']['zookeeper'])
 return if zookeepers.nil? # Not enough nodes
@@ -34,13 +44,3 @@ node.run_state['imply-platform']['metadata_first_server'] =
 
 node.run_state['imply-platform']['metadata_servers'] =
   database['hosts'].join(',')
-
-# Searching for nodes having the imply master/data/query/client role
-%w(master data query client).each do |role|
-  imply_role = cluster_search(node['imply-platform'][role])
-  next unless imply_role
-  node.run_state['imply-platform'][role] = imply_role['hosts']
-  if imply_role['hosts'].include?(node['fqdn'])
-    node.run_state['imply-platform']['my_roles'] << role
-  end
-end
