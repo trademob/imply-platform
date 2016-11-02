@@ -11,6 +11,5 @@ version '2.0.0'
 supports 'centos', '>= 7.1'
 
 depends 'ark'
-depends 'yum'
 depends 'cluster-search'
 depends 'database'
