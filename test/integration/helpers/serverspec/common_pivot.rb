@@ -19,7 +19,8 @@ require 'spec_helper'
 def wait_pivot_data(cmd)
   (1..24).each do |try|
     output = `#{cmd}`
-    break if output.include?("Adding Data Cube: 'pageviews'")
+    break if
+      output.include?("Adding data cube manager for \'druid-pageviews-0\'")
     puts "Waiting for pivot datasource… Try ##{try}/24, waiting 5s"
     sleep(5)
   end
@@ -41,7 +42,9 @@ describe 'Imply Pivot' do
   end
 
   it 'should have added a data cube' do
-    cmd = 'journalctl -u imply-pivot | grep "Adding Data Cube: \'pageviews\'"'
+    cmd =
+      'systemctl restart imply-pivot && journalctl -u imply-pivot | grep \
+      "Adding data cube manager for \'druid-pageviews-0\'"'
     wait_pivot_data(cmd)
     expect(command(cmd).exit_status).to eq(0)
   end

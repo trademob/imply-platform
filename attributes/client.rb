@@ -20,10 +20,7 @@ default['imply-platform']['druid']['config']['components']['pivot'] = {
   'clusters' => {
     'druid' => { # key is used as name (better than array)
       'type' => 'druid',
-      'host' => 'localhost:8082',
-      'sourceListRefreshInterval' => 30_000,
-      'sourceListRefreshOnLoad' => false
+      'host' => 'localhost:8082'
     }
-  },
-  dataSources: []
+  }
 }
