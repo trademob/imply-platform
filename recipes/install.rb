@@ -69,4 +69,5 @@ end
 java_package = node['imply-platform']['java'][node['platform']]
 package java_package do
   retries node['imply-platform']['package_retries']
-end unless java_package.to_s.empty?
+  not_if java_package.to_s.empty?
+end

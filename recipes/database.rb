@@ -54,8 +54,8 @@ when 'mysql'
   mysql_package = node['imply-platform']['mysql'][node['platform']]
   package mysql_package do
     retries node['imply-platform']['package_retries']
-  end unless mysql_package.to_s.empty?
-
+    not_if mysql_package.to_s.empty?
+  end
   execute 'create druid database on backend' do
     command <<-EOF
       mysql -h #{host} --port #{port} \
