@@ -21,12 +21,12 @@ default['imply-platform']['data_bag']['item'] = 'mariadb-credentials'
 default['imply-platform']['data_bag']['key'] = 'password'
 
 # imply package
-default['imply-platform']['version'] = '1.3.0'
+default['imply-platform']['version'] = '2.0.0'
 imply_version = node['imply-platform']['version']
 
 # Checksum of imply tarball
 default['imply-platform']['checksum'] =
-  '5f8de31500125b91d78475721cdce2c3f434d8577b9f349695b15dc7584b44bf'
+  '1d5c483feb74b41e3870079d94b52fa110a66780810208c693c1ebad9c0ce85f'
 
 # imply url
 default['imply-platform']['url'] = 'http://static.imply.io/release'

@@ -16,6 +16,7 @@
 
 default['imply-platform']['druid']['config']['components']['pivot'] = {
   'port' => 9095,
+  'varDir' => node['imply-platform']['var_dir'],
   'clusters' => {
     'druid' => { # key is used as name (better than array)
       'type' => 'druid',

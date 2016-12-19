@@ -59,6 +59,7 @@ ark 'imply' do
   prefix_root node['imply-platform']['prefix_root']
   prefix_home node['imply-platform']['prefix_home']
   prefix_bin node['imply-platform']['prefix_bin']
+  strip_components 2
   has_binaries []
   checksum node['imply-platform']['checksum']
   version node['imply-platform']['version']
