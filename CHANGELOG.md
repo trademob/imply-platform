@@ -1,6 +1,18 @@
 Changelog
 =========
 
+3.0.0
+-----
+
+Main:
+
+- Support imply 2.0.0+, break compatibility with previous versions
+
+Tests:
+
+- Use latest gitlab-ci template (20170117)
+- Fix destroy after a fail occurs (mostly for CI)
+
 2.0.0
 -----
 
