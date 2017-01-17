@@ -55,7 +55,7 @@ end
 config_jvm = config['jvm'].to_h
 common = config_jvm['common']
 %w(broker coordinator historical middleManager overlord).each do |component|
-  conf = common.map { |k, v| [k, v % { component: component }] }.to_h
+  conf = common.map { |k, v| [k, format(v, component: component)] }.to_h
   conf = conf.merge(config_jvm[component])
   template "#{path}/#{component}/jvm.config" do
     variables config: conf
