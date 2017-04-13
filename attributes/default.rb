@@ -68,10 +68,10 @@ default['imply-platform']['unit_path'] = '/etc/systemd/system'
 
 # Druid components per Imply role
 default['imply-platform']['components_per_role'] = {
-  'master' => %w(coordinator overlord),
-  'data' => %w(historical middleManager),
-  'query' => %w(broker),
-  'client' => %w(pivot)
+  'master' => %w[coordinator overlord],
+  'data' => %w[historical middleManager],
+  'query' => %w[broker],
+  'client' => %w[pivot]
 }
 
 # Metadata configuration

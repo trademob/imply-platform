@@ -17,7 +17,7 @@
 require 'spec_helper'
 
 describe 'Imply data' do
-  %w(historical middleManager).each do |service|
+  %w[historical middleManager].each do |service|
     it 'is running' do
       expect(service("imply-druid-#{service}")).to be_running
     end

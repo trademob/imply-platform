@@ -21,10 +21,10 @@ druid_config_path = "#{imply_home}/imply/conf/druid"
 components_per_role = node['imply-platform']['components_per_role']
 
 config_files = components_per_role.values.flatten.map do |component|
-  specifics = %w(jvm.config runtime.properties).map do |file|
+  specifics = %w[jvm.config runtime.properties].map do |file|
     "template[#{druid_config_path}/#{component}/#{file}]"
   end
-  commons = %w(common.runtime.properties log4j2.xml).map do |common|
+  commons = %w[common.runtime.properties log4j2.xml].map do |common|
     "template[#{druid_config_path}/_common/#{common}"
   end
   [component, specifics + commons]
@@ -33,7 +33,7 @@ config_files['pivot'] =
   ["template[#{imply_home}/imply/conf/pivot/config.yaml]"]
 
 # Determine role to start from node id in cluster
-%w(master data query client).each do |role|
+%w[master data query client].each do |role|
   # Install only service we need
   imply_role = node.run_state['imply-platform'][role]
   next unless imply_role && imply_role.include?(node['fqdn'])
@@ -46,7 +46,7 @@ config_files['pivot'] =
     service_name = "imply-#{service}" if service == 'pivot'
 
     service service_name do
-      action [:enable, :start]
+      action %i[enable start]
       subscribes :restart, config_files[service] if auto_restart
     end
   end

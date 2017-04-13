@@ -18,7 +18,7 @@
 unit_path = node['imply-platform']['unit_path']
 components_per_role = node['imply-platform']['components_per_role']
 
-%w(master data query client).each do |role|
+%w[master data query client].each do |role|
   # Deploy template if node has role
   imply_role = node.run_state['imply-platform'][role]
   next unless imply_role && imply_role.include?(node['fqdn'])

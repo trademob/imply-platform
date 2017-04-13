@@ -21,7 +21,7 @@ node.run_state['imply-platform'] ||= {}
 node.run_state['imply-platform']['my_roles'] = []
 
 # Searching for nodes having the imply master/data/query/client role
-%w(master data query client).each do |role|
+%w[master data query client].each do |role|
   imply_role = cluster_search(node['imply-platform'][role])
   next unless imply_role
   node.run_state['imply-platform'][role] = imply_role['hosts']

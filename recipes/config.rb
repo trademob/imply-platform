@@ -54,7 +54,7 @@ end
 # Druid jvm properties
 config_jvm = config['jvm'].to_h
 common = config_jvm['common']
-%w(broker coordinator historical middleManager overlord).each do |component|
+%w[broker coordinator historical middleManager overlord].each do |component|
   conf = common.map { |k, v| [k, format(v, component: component)] }.to_h
   conf = conf.merge(config_jvm[component])
   template "#{path}/#{component}/jvm.config" do
@@ -68,7 +68,7 @@ end
 
 # Druid components properties
 config_components = config['components']
-%w(broker coordinator historical middleManager overlord).each do |component|
+%w[broker coordinator historical middleManager overlord].each do |component|
   template "#{path}/#{component}/runtime.properties" do
     variables config: config_components[component]
     mode '0640'
@@ -80,7 +80,7 @@ end
 
 # Create default indexer logs and storage directories if storage is local
 if config_common['druid.storage.type'] == 'local'
-  %w(druid.indexer.logs.directory druid.storage.storageDirectory).each do |dir|
+  %w[druid.indexer.logs.directory druid.storage.storageDirectory].each do |dir|
     directory config_common[dir] do
       user node['imply-platform']['user']
       group node['imply-platform']['group']

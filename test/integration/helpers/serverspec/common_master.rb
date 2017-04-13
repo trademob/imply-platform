@@ -17,7 +17,7 @@
 require 'spec_helper'
 
 describe 'Imply master' do # rubocop:disable Metrics/BlockLength
-  %w(coordinator overlord).each do |service|
+  %w[coordinator overlord].each do |service|
     it 'is running' do
       expect(service("imply-druid-#{service}")).to be_running
     end
