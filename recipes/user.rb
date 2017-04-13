@@ -16,6 +16,7 @@
 
 # Define imply group
 group node['imply-platform']['group'] do
+  append node['imply-platform']['group_append']
   system true
 end
 

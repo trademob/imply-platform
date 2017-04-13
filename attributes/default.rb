@@ -38,6 +38,7 @@ default['imply-platform']['mirror'] = "#{url}/imply-#{imply_version}.tar.gz"
 # User and group of imply process
 default['imply-platform']['user'] = 'imply'
 default['imply-platform']['group'] = node['imply-platform']['user']
+default['imply-platform']['group_append'] = true
 
 # User and group of imply storage dir (deep storage & indexing logs)
 default['imply-platform']['storage_dir']['user'] =
