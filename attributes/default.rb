@@ -37,7 +37,15 @@ default['imply-platform']['mirror'] = "#{url}/imply-#{imply_version}.tar.gz"
 
 # User and group of imply process
 default['imply-platform']['user'] = 'imply'
-default['imply-platform']['group'] = 'imply'
+default['imply-platform']['group'] = node['imply-platform']['user']
+
+# User and group of imply storage dir (deep storage & indexing logs)
+default['imply-platform']['storage_dir']['user'] =
+  node['imply-platform']['user']
+default['imply-platform']['storage_dir']['group'] =
+  node['imply-platform']['group']
+default['imply-platform']['storage_dir']['mode'] = '0750'
+
 # Where to put installation dir
 default['imply-platform']['prefix_root'] = '/opt'
 # Where to link installation dir

@@ -82,8 +82,9 @@ end
 if config_common['druid.storage.type'] == 'local'
   %w[druid.indexer.logs.directory druid.storage.storageDirectory].each do |dir|
     directory config_common[dir] do
-      user node['imply-platform']['user']
-      group node['imply-platform']['group']
+      user node['imply-platform']['storage_dir']['user']
+      group node['imply-platform']['storage_dir']['group']
+      mode node['imply-platform']['storage_dir']['mode']
       recursive true
     end
   end
