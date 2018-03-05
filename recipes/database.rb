@@ -52,8 +52,10 @@ when 'postgresql'
 when 'mysql'
   # Install mysql command
   mysql_package = node[cookbook_name]['mysql'][node['platform']]
+  package_retries = node[cookbook_name]['package_retries']
+
   package mysql_package do
-    retries node[cookbook_name]['package_retries']
+    retries package_retries unless package_retries.nil?
     not_if { mysql_package.to_s.empty? }
   end
   execute 'create druid database on backend' do

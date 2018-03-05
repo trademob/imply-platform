@@ -22,8 +22,9 @@ yum_repository 'nodesource' do
   action :create
 end
 
+package_retries = node[cookbook_name]['package_retries']
 # Install nodejs
 package 'nodejs' do
   action :install
-  retries node[cookbook_name]['package_retries']
+  retries package_retries unless package_retries.nil?
 end

@@ -14,9 +14,11 @@
 # limitations under the License.
 #
 
+package_retries = node[cookbook_name]['package_retries']
+
 # tar may not be installed by default
 package 'tar' do
-  retries node[cookbook_name]['package_retries']
+  retries package_retries unless package_retries.nil?
 end
 
 # Create prefix directories
@@ -68,6 +70,6 @@ end
 # Java packages are needed by imply, can install it with package
 java_package = node[cookbook_name]['java'][node['platform']]
 package java_package do
-  retries node[cookbook_name]['package_retries']
+  retries package_retries unless package_retries.nil?
   not_if java_package.to_s.empty?
 end
