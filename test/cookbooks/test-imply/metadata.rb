@@ -1,3 +1,3 @@
 name 'test-imply'
-maintainer 'Sam4Mobile'
-maintainer_email 'dps.team@s4m.io'
+maintainer 'Make.org'
+maintainer_email 'sre@make.org'
