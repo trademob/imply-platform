@@ -15,12 +15,12 @@
 #
 
 # Deploy systemd unit files
-unit_path = node['imply-platform']['unit_path']
-components_per_role = node['imply-platform']['components_per_role']
+unit_path = node[cookbook_name]['unit_path']
+components_per_role = node[cookbook_name]['components_per_role']
 
 %w[master data query client].each do |role|
   # Deploy template if node has role
-  imply_role = node.run_state['imply-platform'][role]
+  imply_role = node.run_state[cookbook_name][role]
   next unless imply_role && imply_role.include?(node['fqdn'])
 
   components_per_role[role].each do |service|
@@ -33,9 +33,9 @@ components_per_role = node['imply-platform']['components_per_role']
     template "#{unit_path}/#{service_name}.service" do
       source 'systemd/imply.service.erb'
       variables(
-        user: node['imply-platform']['user'],
-        group: node['imply-platform']['group'],
-        prefix_root: node['imply-platform']['prefix_root'],
+        user: node[cookbook_name]['user'],
+        group: node[cookbook_name]['group'],
+        prefix_root: node[cookbook_name]['prefix_root'],
         type: type,
         service: service
       )

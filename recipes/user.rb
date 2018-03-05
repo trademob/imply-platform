@@ -15,15 +15,15 @@
 #
 
 # Define imply group
-group node['imply-platform']['group'] do
-  append node['imply-platform']['group_append']
+group node[cookbook_name]['group'] do
+  append node[cookbook_name]['group_append']
   system true
 end
 
 # Define imply user
-user node['imply-platform']['user'] do
+user node[cookbook_name]['user'] do
   comment 'imply service account'
-  group node['imply-platform']['group']
+  group node[cookbook_name]['group']
   system true
   shell '/sbin/nologin'
 end

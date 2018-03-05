@@ -14,11 +14,11 @@
 # limitations under the License.
 #
 
-imply_home = node['imply-platform']['prefix_home']
+imply_home = node[cookbook_name]['prefix_home']
 druid_config_path = "#{imply_home}/imply/conf/druid"
 
 # Change in these config files will trigger a role daemon restart
-components_per_role = node['imply-platform']['components_per_role']
+components_per_role = node[cookbook_name]['components_per_role']
 
 config_files = components_per_role.values.flatten.map do |component|
   specifics = %w[jvm.config runtime.properties].map do |file|
@@ -35,11 +35,11 @@ config_files['pivot'] =
 # Determine role to start from node id in cluster
 %w[master data query client].each do |role|
   # Install only service we need
-  imply_role = node.run_state['imply-platform'][role]
+  imply_role = node.run_state[cookbook_name][role]
   next unless imply_role && imply_role.include?(node['fqdn'])
 
   # Auto restart service if change in a template file
-  auto_restart = node['imply-platform']['auto_restart']
+  auto_restart = node[cookbook_name]['auto_restart']
 
   components_per_role[role].each do |service|
     service_name = "imply-druid-#{service}"

@@ -14,24 +14,27 @@
 # limitations under the License.
 #
 
-default['imply-platform']['druid']['config']['jvm']['coordinator'] = {
+# Define useful cookbook_name macro
+cookbook_name = 'imply-platform'
+
+default[cookbook_name]['druid']['config']['jvm']['coordinator'] = {
   '-Xms' => '3g',
   '-Xmx' => '3g'
 }
 
-default['imply-platform']['druid']['config']['jvm']['overlord'] = {
+default[cookbook_name]['druid']['config']['jvm']['overlord'] = {
   '-Xms' => '3g',
   '-Xmx' => '3g'
 }
 
-default['imply-platform']['druid']['config']['components']['coordinator'] = {
+default[cookbook_name]['druid']['config']['components']['coordinator'] = {
   'druid.service' => 'druid/coordinator',
   'druid.port' => 8081,
   'druid.coordinator.startDelay' => 'PT30S',
   'druid.coordinator.period' => 'PT30S'
 }
 
-default['imply-platform']['druid']['config']['components']['overlord'] = {
+default[cookbook_name]['druid']['config']['components']['overlord'] = {
   'druid.service' => 'druid/overlord',
   'druid.port' => 8090,
   'druid.indexer.queue.startDelay' => 'PT30S',

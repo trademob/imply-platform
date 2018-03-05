@@ -14,24 +14,24 @@
 # limitations under the License.
 #
 
-druid_config = node['imply-platform']['druid']['config']
+druid_config = node[cookbook_name]['druid']['config']
 common_properties = druid_config['common_runtime_properties']
 
 database_type = common_properties['druid.metadata.storage.type']
 
 # Metadata credentials
 # Load password from encrypted data bag
-data_bag = node['imply-platform']['data_bag']
-node.run_state['imply-platform']['metadata_password'] =
+data_bag = node[cookbook_name]['data_bag']
+node.run_state[cookbook_name]['metadata_password'] =
   data_bag_item(data_bag['name'], data_bag['item'])[data_bag['key']]
 
 # Default to 'druid' database
-db = node['imply-platform']['metadata']['database']
+db = node[cookbook_name]['metadata']['database']
 
-host = node.run_state['imply-platform']['metadata_first_server']
-port = node['imply-platform']['metadata']['server']['port']
-login = node['imply-platform']['metadata']['user']['login']
-password = node.run_state['imply-platform']['metadata_password']
+host = node.run_state[cookbook_name]['metadata_first_server']
+port = node[cookbook_name]['metadata']['server']['port']
+login = node[cookbook_name]['metadata']['user']['login']
+password = node.run_state[cookbook_name]['metadata_password']
 
 case database_type
 when 'postgresql'
@@ -51,22 +51,22 @@ when 'postgresql'
   end
 when 'mysql'
   # Install mysql command
-  mysql_package = node['imply-platform']['mysql'][node['platform']]
+  mysql_package = node[cookbook_name]['mysql'][node['platform']]
   package mysql_package do
-    retries node['imply-platform']['package_retries']
+    retries node[cookbook_name]['package_retries']
     not_if { mysql_package.to_s.empty? }
   end
   execute 'create druid database on backend' do
     command <<-MYSQL
       mysql -h #{host} --port #{port} \
-      -u #{node['imply-platform']['metadata']['user']['login']} \
-      -p'#{node.run_state['imply-platform']['metadata_password']}' \
+      -u #{node[cookbook_name]['metadata']['user']['login']} \
+      -p'#{node.run_state[cookbook_name]['metadata_password']}' \
       -e "CREATE DATABASE IF NOT EXISTS #{db} \
       DEFAULT CHARACTER SET = UTF8 \
       COLLATE = 'utf8_general_ci';"
     MYSQL
-    retries node['imply-platform']['database_creation_retries']
-    retry_delay node['imply-platform']['database_creation_retry_delay']
+    retries node[cookbook_name]['database_creation_retries']
+    retry_delay node[cookbook_name]['database_creation_retry_delay']
     not_if "mysql -h #{host} -u #{login} -p'#{password}' -e 'use #{db}'"
   end
 

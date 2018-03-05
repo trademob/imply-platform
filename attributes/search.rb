@@ -14,6 +14,9 @@
 # limitations under the License.
 #
 
+# Define useful cookbook_name macro
+cookbook_name = 'imply-platform'
+
 # Cluster Search (cluster-search) is a simple cookbook library which simplify
 # the search of members of a cluster. It relies on Chef search with a size
 # guard (to avoid inconsistencies during initial convergence) and allows a
@@ -25,26 +28,26 @@
 # - unempty hosts deactivates search, it's the member list of the cluster
 # - size is the expected size of the searched cluster, ignored if hosts is used
 
-default['imply-platform']['master']['role'] = 'master-imply-platform'
-default['imply-platform']['master']['hosts'] = []
-default['imply-platform']['master']['size'] = 1
+default[cookbook_name]['master']['role'] = 'master-imply-platform'
+default[cookbook_name]['master']['hosts'] = []
+default[cookbook_name]['master']['size'] = 1
 
-default['imply-platform']['data']['role'] = 'data-imply-platform'
-default['imply-platform']['data']['hosts'] = []
-default['imply-platform']['data']['size'] = 1
+default[cookbook_name]['data']['role'] = 'data-imply-platform'
+default[cookbook_name]['data']['hosts'] = []
+default[cookbook_name]['data']['size'] = 1
 
-default['imply-platform']['query']['role'] = 'query-imply-platform'
-default['imply-platform']['query']['hosts'] = []
-default['imply-platform']['query']['size'] = 1
+default[cookbook_name]['query']['role'] = 'query-imply-platform'
+default[cookbook_name]['query']['hosts'] = []
+default[cookbook_name]['query']['size'] = 1
 
-default['imply-platform']['client']['role'] = 'client-imply-platform'
-default['imply-platform']['client']['hosts'] = []
-default['imply-platform']['client']['size'] = 1
+default[cookbook_name]['client']['role'] = 'client-imply-platform'
+default[cookbook_name]['client']['hosts'] = []
+default[cookbook_name]['client']['size'] = 1
 
-default['imply-platform']['zookeeper']['role'] = 'zookeeper-cluster'
-default['imply-platform']['zookeeper']['hosts'] = []
-default['imply-platform']['zookeeper']['size'] = 1
+default[cookbook_name]['zookeeper']['role'] = 'zookeeper-cluster'
+default[cookbook_name]['zookeeper']['hosts'] = []
+default[cookbook_name]['zookeeper']['size'] = 1
 
-default['imply-platform']['database']['role'] = 'mariadb-galera-cluster'
-default['imply-platform']['database']['hosts'] = []
-default['imply-platform']['database']['size'] = 1
+default[cookbook_name]['database']['role'] = 'mariadb-galera-cluster'
+default[cookbook_name]['database']['hosts'] = []
+default[cookbook_name]['database']['size'] = 1

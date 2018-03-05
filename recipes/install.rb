@@ -16,14 +16,14 @@
 
 # tar may not be installed by default
 package 'tar' do
-  retries node['imply-platform']['package_retries']
+  retries node[cookbook_name]['package_retries']
 end
 
 # Create prefix directories
 [
-  node['imply-platform']['prefix_root'],
-  node['imply-platform']['prefix_home'],
-  node['imply-platform']['prefix_bin']
+  node[cookbook_name]['prefix_root'],
+  node[cookbook_name]['prefix_home'],
+  node[cookbook_name]['prefix_bin']
 ].uniq.each do |dir_path|
   directory "imply-platform:#{dir_path}" do
     path dir_path
@@ -37,17 +37,17 @@ end
 
 # var, tmp and log dir owned by imply user
 dirs = []
-dirs << node['imply-platform']['var_dir']
-tmp = node['imply-platform']['tmp_dir']
+dirs << node[cookbook_name]['var_dir']
+tmp = node[cookbook_name]['tmp_dir']
 dirs << tmp
-components_per_role = node['imply-platform']['components_per_role']
+components_per_role = node[cookbook_name]['components_per_role']
 dirs += components_per_role.values.flatten.uniq.map { |c| "#{tmp}/#{c}" }
-dirs << node['imply-platform']['log_dir']
+dirs << node[cookbook_name]['log_dir']
 
 dirs.each do |dir|
   directory dir do
-    owner node['imply-platform']['user']
-    group node['imply-platform']['group']
+    owner node[cookbook_name]['user']
+    group node[cookbook_name]['group']
     recursive true
     action :create
   end
@@ -55,19 +55,19 @@ end
 
 ark 'imply' do
   action :install
-  url node['imply-platform']['mirror']
-  prefix_root node['imply-platform']['prefix_root']
-  prefix_home node['imply-platform']['prefix_home']
-  prefix_bin node['imply-platform']['prefix_bin']
+  url node[cookbook_name]['mirror']
+  prefix_root node[cookbook_name]['prefix_root']
+  prefix_home node[cookbook_name]['prefix_home']
+  prefix_bin node[cookbook_name]['prefix_bin']
   strip_components 2
   has_binaries []
-  checksum node['imply-platform']['checksum']
-  version node['imply-platform']['version']
+  checksum node[cookbook_name]['checksum']
+  version node[cookbook_name]['version']
 end
 
 # Java packages are needed by imply, can install it with package
-java_package = node['imply-platform']['java'][node['platform']]
+java_package = node[cookbook_name]['java'][node['platform']]
 package java_package do
-  retries node['imply-platform']['package_retries']
+  retries node[cookbook_name]['package_retries']
   not_if java_package.to_s.empty?
 end

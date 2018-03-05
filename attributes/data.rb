@@ -14,18 +14,21 @@
 # limitations under the License.
 #
 
-default['imply-platform']['druid']['config']['jvm']['historical'] = {
+# Define useful cookbook_name macro
+cookbook_name = 'imply-platform'
+
+default[cookbook_name]['druid']['config']['jvm']['historical'] = {
   '-Xms' => '8g',
   '-Xmx' => '8g'
 }
-default['imply-platform']['druid']['config']['jvm']['middleManager'] = {
+default[cookbook_name]['druid']['config']['jvm']['middleManager'] = {
   '-Xms' => '64m',
   '-Xmx' => '64m'
 }
 
-var = node['imply-platform']['var_dir']
+var = node[cookbook_name]['var_dir']
 
-default['imply-platform']['druid']['config']['components']['historical'] = {
+default[cookbook_name]['druid']['config']['components']['historical'] = {
   'druid.service' => 'druid/historical',
   'druid.port' => 8083,
   'druid.server.http.numThreads' => 40,
@@ -40,10 +43,10 @@ default['imply-platform']['druid']['config']['components']['historical'] = {
   'druid.cache.sizeInBytes' => 2_000_000_000
 }
 
-common = node['imply-platform']['druid']['config']['common_runtime_properties']
+common = node[cookbook_name]['druid']['config']['common_runtime_properties']
 logdir = common['druid.indexer.logs.directory']
 
-default['imply-platform']['druid']['config']['components']['middleManager'] = {
+default[cookbook_name]['druid']['config']['components']['middleManager'] = {
   'druid.service' => 'druid/middlemanager',
   'druid.port' => 8091,
   'druid.worker.capacity' => 3,

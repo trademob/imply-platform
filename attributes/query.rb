@@ -14,12 +14,15 @@
 # limitations under the License.
 #
 
-default['imply-platform']['druid']['config']['jvm']['broker'] = {
+# Define useful cookbook_name macro
+cookbook_name = 'imply-platform'
+
+default[cookbook_name]['druid']['config']['jvm']['broker'] = {
   '-Xms' => '24g',
   '-Xmx' => '24g'
 }
 
-default['imply-platform']['druid']['config']['components']['broker'] = {
+default[cookbook_name]['druid']['config']['components']['broker'] = {
   'druid.service' => 'druid/broker',
   'druid.port' => 8082,
   'druid.broker.http.numConnections' => 5,

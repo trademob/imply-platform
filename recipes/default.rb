@@ -19,12 +19,12 @@ include_recipe "#{cookbook_name}::user"
 include_recipe "#{cookbook_name}::install"
 
 # Install nodejs for clients
-if node.run_state['imply-platform']['my_roles'].include?('client')
+if node.run_state[cookbook_name]['my_roles'].include?('client')
   include_recipe "#{cookbook_name}::nodejs"
 end
 
 # Connect to database for others
-unless (node.run_state['imply-platform']['my_roles'] - ['client']).empty?
+unless (node.run_state[cookbook_name]['my_roles'] - ['client']).empty?
   include_recipe "#{cookbook_name}::database"
 end
 

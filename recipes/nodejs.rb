@@ -17,13 +17,13 @@
 # Set repository for nodejs installation needed by query imply service
 yum_repository 'nodesource' do
   description 'NodeJS repository'
-  baseurl node['imply-platform']['nodejs']['mirror']
-  gpgkey node['imply-platform']['nodejs']['gpgkey']
+  baseurl node[cookbook_name]['nodejs']['mirror']
+  gpgkey node[cookbook_name]['nodejs']['gpgkey']
   action :create
 end
 
 # Install nodejs
 package 'nodejs' do
   action :install
-  retries node['imply-platform']['package_retries']
+  retries node[cookbook_name]['package_retries']
 end

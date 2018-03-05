@@ -15,23 +15,23 @@
 #
 
 # Generate config
-imply_home = node['imply-platform']['prefix_home']
-config = node['imply-platform']['druid']['config']
+imply_home = node[cookbook_name]['prefix_home']
+config = node[cookbook_name]['druid']['config']
 path = "#{imply_home}/imply/conf/druid"
 
-unless node.run_state['imply-platform']['metadata_servers'].nil?
+unless node.run_state[cookbook_name]['metadata_servers'].nil?
   # Using members of DB cluster
-  database_hosts = node.run_state['imply-platform']['metadata_servers']
+  database_hosts = node.run_state[cookbook_name]['metadata_servers']
 end
 
 # Set the database to create
-db = node['imply-platform']['metadata']['database']
+db = node[cookbook_name]['metadata']['database']
 
 # Get common properties and define master Zookeeper address
 # and jdbc url
 common_runtime_properties = config['common_runtime_properties'].to_hash
 common_runtime_properties['druid.zk.service.host'] =
-  node.run_state['imply-platform']['zookeeper']
+  node.run_state[cookbook_name]['zookeeper']
 
 # Construct the jdbc url to use with failover support
 common_runtime_properties['druid.metadata.storage.connector.connectURI'] =
@@ -39,7 +39,7 @@ common_runtime_properties['druid.metadata.storage.connector.connectURI'] =
 
 # Define the password to use to connect to the database
 common_runtime_properties['druid.metadata.storage.connector.password'] =
-  node.run_state['imply-platform']['metadata_password']
+  node.run_state[cookbook_name]['metadata_password']
 
 # Druid common properties
 config_common = config['common_runtime_properties']
@@ -47,8 +47,8 @@ template "#{path}/_common/common.runtime.properties" do
   variables config: common_runtime_properties
   mode '0640'
   source 'druid/common.runtime.properties.erb'
-  user node['imply-platform']['user']
-  group node['imply-platform']['group']
+  user node[cookbook_name]['user']
+  group node[cookbook_name]['group']
 end
 
 # Druid jvm properties
@@ -61,8 +61,8 @@ common = config_jvm['common']
     variables config: conf
     mode '0640'
     source 'druid/jvm.config.erb'
-    user node['imply-platform']['user']
-    group node['imply-platform']['group']
+    user node[cookbook_name]['user']
+    group node[cookbook_name]['group']
   end
 end
 
@@ -73,8 +73,8 @@ config_components = config['components']
     variables config: config_components[component]
     mode '0640'
     source 'druid/runtime.properties.erb'
-    user node['imply-platform']['user']
-    group node['imply-platform']['group']
+    user node[cookbook_name]['user']
+    group node[cookbook_name]['group']
   end
 end
 
@@ -82,9 +82,9 @@ end
 if config_common['druid.storage.type'] == 'local'
   %w[druid.indexer.logs.directory druid.storage.storageDirectory].each do |dir|
     directory config_common[dir] do
-      user node['imply-platform']['storage_dir']['user']
-      group node['imply-platform']['storage_dir']['group']
-      mode node['imply-platform']['storage_dir']['mode']
+      user node[cookbook_name]['storage_dir']['user']
+      group node[cookbook_name]['storage_dir']['group']
+      mode node[cookbook_name]['storage_dir']['mode']
       recursive true
     end
   end
@@ -99,8 +99,8 @@ template "#{path}/_common/log4j2.xml" do
   variables config: config['log4j2']
   mode '0644'
   source 'xml.erb'
-  user node['imply-platform']['user']
-  group node['imply-platform']['group']
+  user node[cookbook_name]['user']
+  group node[cookbook_name]['group']
 end
 
 pivot_conf = config['components']['pivot'].to_hash
