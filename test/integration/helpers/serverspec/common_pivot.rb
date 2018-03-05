@@ -15,14 +15,14 @@
 #
 
 require 'spec_helper'
+require 'phantomjs'
 
-def wait_pivot_data(cmd)
-  (1..24).each do |try|
-    output = `#{cmd}`
-    break if
-      output.include?("Adding data cube manager for \'druid-pageviews-0\'")
-    puts "Waiting for pivot datasource… Try ##{try}/24, waiting 5s"
-    sleep(5)
+def wait_pivot_source(cmd)
+  (1..30).each do |try|
+    rasterize
+    break if system(cmd)
+    puts "Waiting for pivot datasource… Try ##{try}/30, waiting 2s"
+    sleep(2)
   end
 end
 
@@ -35,17 +35,14 @@ describe 'Imply Pivot' do
     expect(service('imply-pivot')).to be_enabled
   end
 
-  wait_service('pivot', 9095)
-
   it 'has Pivot listening on correct port' do
     expect(port(9095)).to be_listening
   end
 
-  it 'should have added a data cube' do
-    cmd =
-      'systemctl restart imply-pivot && journalctl -u imply-pivot | grep \
-      "Adding data cube manager for \'druid-pageviews-0\'"'
-    wait_pivot_data(cmd)
+  it 'should have a dataset configured' do
+    pattern = '"POST /datasets/datasource/load HTTP/1.1" 200'
+    cmd = "journalctl -u imply-pivot | grep '#{pattern}' 2>&1 >/dev/null"
+    wait_pivot_source(cmd)
     expect(command(cmd).exit_status).to eq(0)
   end
 end

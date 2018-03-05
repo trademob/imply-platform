@@ -101,20 +101,25 @@ suites:
             components:
               historical:
                 druid.processing.numThreads: 2
+                druid.processing.buffer.sizeBytes: 67108864
+              middleManager:
+                druid.processing.numThreads: 2
+                druid.processing.buffer.sizeBytes: 67108864
               broker:
                 druid.processing.numThreads: 2
+                druid.processing.buffer.sizeBytes: 67108864
             jvm:
               coordinator:
-                -Xms: 256m
-                -Xmx: 1g
+                -Xms: 64m
+                -Xmx: 256m
               overlord:
-                -Xms: 256m
-                -Xmx: 1g
+                -Xms: 64m
+                -Xmx: 256m
               historical:
-                -Xms: 256m
-                -Xmx: 2g
+                -Xms: 64m
+                -Xmx: 512m
               broker:
-                -Xms: 256m
-                -Xmx: 2g
+                -Xms: 64m
+                -Xmx: 512m
   <% end %>
 <% end %>

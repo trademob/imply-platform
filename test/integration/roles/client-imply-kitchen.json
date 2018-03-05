@@ -11,9 +11,13 @@
         "config": {
           "components": {
             "pivot": {
-              "clusters": {
-                "druid": {
-                  "host": "query-imply-1-centos-7:8082"
+              "initialSettings": {
+                "connections": {
+                  "druid": {
+                    "host": "query-imply-1-centos-7:8082",
+                    "coordinatorHosts": ["master-imply-1-centos-7:8081"],
+                    "overlordHosts": ["master-imply-1-centos-7:8090"]
+                  }
                 }
               }
             }

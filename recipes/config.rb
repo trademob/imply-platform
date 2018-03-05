@@ -103,11 +103,12 @@ template "#{path}/_common/log4j2.xml" do
   group node[cookbook_name]['group']
 end
 
-pivot_conf = config['components']['pivot'].to_hash
-pivot_conf['clusters'] = pivot_conf['clusters'].map do |name, values|
-  { 'name' => name }.merge(values)
-end
 # Pivot yaml file
+pivot_conf = config['components']['pivot'].to_hash
+pivot_conf['initialSettings']['connections'] =
+  pivot_conf['initialSettings']['connections'].map do |name, values|
+    { 'name' => name }.merge(values)
+  end
 template "#{imply_home}/imply/conf/pivot/config.yaml" do
   variables config: pivot_conf
   mode '0644'

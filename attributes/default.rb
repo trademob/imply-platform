@@ -24,12 +24,12 @@ default[cookbook_name]['data_bag']['item'] = 'mariadb-credentials'
 default[cookbook_name]['data_bag']['key'] = 'password'
 
 # imply package
-default[cookbook_name]['version'] = '2.0.0'
+default[cookbook_name]['version'] = '2.5.15'
 imply_version = node[cookbook_name]['version']
 
 # Checksum of imply tarball
 default[cookbook_name]['checksum'] =
-  '1d5c483feb74b41e3870079d94b52fa110a66780810208c693c1ebad9c0ce85f'
+  'eb888c5f38dccb59dd9418006a39867432108a5850d7f1a14e068576fcd154ba'
 
 # imply url
 default[cookbook_name]['url'] = 'http://static.imply.io/release'
@@ -115,7 +115,8 @@ default[cookbook_name]['druid']['config']['common_runtime_properties'] = {
   'druid.selectors.coordinator.serviceName' => 'druid/coordinator',
   'druid.monitoring.monitors' => '["com.metamx.metrics.JvmMonitor"]',
   'druid.emitter' => 'noop',
-  'druid.emitter.logging.logLevel' => 'debug'
+  'druid.emitter.logging.logLevel' => 'debug',
+  'druid.sql.enable' => true
 }
 
 # Druid JVM common properties (will be merge in each components)

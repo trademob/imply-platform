@@ -61,5 +61,5 @@ default[cookbook_name]['druid']['config']['components']['middleManager'] = {
   'druid.processing.numThreads' => 2,
   'druid.indexer.task.hadoopWorkingPath' => "#{var}/druid/hadoop-tmp",
   'druid.indexer.task.defaultHadoopCoordinates' =>
-    '["org.apache.hadoop:hadoop-client:2.3.0"]'
+    '["org.apache.hadoop:hadoop-client:2.7.3"]'
 }

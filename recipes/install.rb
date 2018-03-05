@@ -61,7 +61,7 @@ ark 'imply' do
   prefix_root node[cookbook_name]['prefix_root']
   prefix_home node[cookbook_name]['prefix_home']
   prefix_bin node[cookbook_name]['prefix_bin']
-  strip_components 2
+  strip_components 1
   has_binaries []
   checksum node[cookbook_name]['checksum']
   version node[cookbook_name]['version']
