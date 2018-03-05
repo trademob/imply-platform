@@ -57,14 +57,14 @@ when 'mysql'
     not_if { mysql_package.to_s.empty? }
   end
   execute 'create druid database on backend' do
-    command <<-EOF
+    command <<-MYSQL
       mysql -h #{host} --port #{port} \
       -u #{node['imply-platform']['metadata']['user']['login']} \
       -p'#{node.run_state['imply-platform']['metadata_password']}' \
       -e "CREATE DATABASE IF NOT EXISTS #{db} \
       DEFAULT CHARACTER SET = UTF8 \
       COLLATE = 'utf8_general_ci';"
-    EOF
+    MYSQL
     retries node['imply-platform']['database_creation_retries']
     retry_delay node['imply-platform']['database_creation_retry_delay']
     not_if "mysql -h #{host} -u #{login} -p'#{password}' -e 'use #{db}'"

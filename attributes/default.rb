@@ -119,11 +119,11 @@ default['imply-platform']['druid']['config']['common_runtime_properties'] = {
 default['imply-platform']['druid']['config']['jvm']['common'] = {
   '-Duser.timezone' => 'UTC',
   '-Dfile.encoding' => 'UTF-8',
-  '-Djava.io.tmpdir' => "#{node['imply-platform']['tmp_dir']}/%{component}",
+  '-Djava.io.tmpdir' => "#{node['imply-platform']['tmp_dir']}/%<component>s",
   '-Djava.util.logging.manager' => 'org.apache.logging.log4j.jul.LogManager',
   '-Dlog4j2.dir' => node['imply-platform']['log_dir'],
   '-Dlog4j2.appender' => 'file',
-  '-Dservice' => '%{component}'
+  '-Dservice' => '%<component>s'
 }
 
 # Log4j2 config for all components
