@@ -65,6 +65,14 @@ ark 'imply' do
   has_binaries []
   checksum node[cookbook_name]['checksum']
   version node[cookbook_name]['version']
+  notifies :run, 'execute[imply-platform:save_default_config]', :immediately
+end
+
+imply_home = "#{node[cookbook_name]['prefix_home']}/imply"
+execute 'imply-platform:save_default_config' do
+  command "cp -r #{imply_home}/conf #{imply_home}/conf.default"
+  creates "#{imply_home}/conf.default"
+  action :nothing
 end
 
 # Java packages are needed by imply, can install it with package
