@@ -37,12 +37,4 @@ describe 'Imply data' do
   it 'has Druid Middle Manager listening on correct port' do
     expect(port(8091)).to be_listening
   end
-
-  describe file('/var/opt/imply/log/historical.log') do
-    its(:content) { should contain 'Started @' }
-  end
-
-  describe file('/var/opt/imply/log/middleManager.log') do
-    its(:content) { should contain 'Started @' }
-  end
 end

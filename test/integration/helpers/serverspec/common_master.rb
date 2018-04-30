@@ -16,7 +16,7 @@
 
 require 'spec_helper'
 
-describe 'Imply master' do # rubocop:disable Metrics/BlockLength
+describe 'Imply master' do
   %w[coordinator overlord].each do |service|
     it 'is running' do
       expect(service("imply-druid-#{service}")).to be_running
@@ -36,14 +36,6 @@ describe 'Imply master' do # rubocop:disable Metrics/BlockLength
 
   it 'has Druid Overlord listening on correct port' do
     expect(port(8090)).to be_listening
-  end
-
-  describe file('/var/opt/imply/log/coordinator.log') do
-    its(:content) { should contain 'Started @' }
-  end
-
-  describe file('/var/opt/imply/log/overlord.log') do
-    its(:content) { should contain 'Started @' }
   end
 
   it 'is able to launch indexing task' do

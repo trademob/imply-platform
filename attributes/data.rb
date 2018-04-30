@@ -19,7 +19,8 @@ cookbook_name = 'imply-platform'
 
 default[cookbook_name]['druid']['config']['jvm']['historical'] = {
   '-Xms' => '8g',
-  '-Xmx' => '8g'
+  '-Xmx' => '8g',
+  '-XX:MaxDirectMemorySize' => '8g'
 }
 default[cookbook_name]['druid']['config']['jvm']['middleManager'] = {
   '-Xms' => '64m',
@@ -33,31 +34,28 @@ default[cookbook_name]['druid']['config']['components']['historical'] = {
   'druid.port' => 8083,
   'druid.server.http.numThreads' => 40,
   'druid.processing.buffer.sizeBytes' => 536_870_912,
+  'druid.processing.numMergeBuffers' => 2,
   'druid.processing.numThreads' => 7,
   'druid.segmentCache.locations' =>
     "[{\"path\":\"#{var}/druid/segment-cache\",\"maxSize\"\:130000000000}]",
   'druid.server.maxSize' => 130_000_000_000,
   'druid.historical.cache.useCache' => 'true',
   'druid.historical.cache.populateCache' => 'true',
-  'druid.cache.type' => 'local',
+  'druid.cache.type' => 'caffeine',
   'druid.cache.sizeInBytes' => 2_000_000_000
 }
-
-common = node[cookbook_name]['druid']['config']['common_runtime_properties']
-logdir = common['druid.indexer.logs.directory']
 
 default[cookbook_name]['druid']['config']['components']['middleManager'] = {
   'druid.service' => 'druid/middlemanager',
   'druid.port' => 8091,
   'druid.worker.capacity' => 3,
   'druid.indexer.runner.javaOpts' =>
-  "-server -Xmx2g -Duser.timezone=UTC -Dfile.encoding=UTF-8 \
-    -Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager \
-    -Dservice=peon -Dlog4j2.dir=#{logdir} -Dlog4j2.appender=console",
+    '-server -Xmx2g -Duser.timezone=UTC -Dfile.encoding=UTF-8' \
+    '-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager',
   'druid.indexer.task.baseTaskDir' => "#{var}/druid/task",
   'druid.indexer.task.restoreTasksOnRestart' => 'true',
   'druid.server.http.numThreads' => 40,
-  'druid.processing.buffer.sizeBytes' => 536_870_912,
+  'druid.processing.buffer.sizeBytes' => 100_000_000,
   'druid.processing.numThreads' => 2,
   'druid.indexer.task.hadoopWorkingPath' => "#{var}/druid/hadoop-tmp",
   'druid.indexer.task.defaultHadoopCoordinates' =>

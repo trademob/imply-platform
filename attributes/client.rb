@@ -19,13 +19,13 @@ cookbook_name = 'imply-platform'
 
 default[cookbook_name]['druid']['config']['components']['pivot'] = {
   'port' => 9095,
-  'varDir' => node[cookbook_name]['var_dir'],
+  'varDir' => "#{node[cookbook_name]['var_dir']}/pivot",
   'initialSettings' => {
     'connections' => {
       'druid' => { # key is used as name (better than array)
         'type' => 'druid',
         'title' => 'My Druid',
-        'host' => 'localhost:8082',
+        'host' => '', # localhost:8082
         'coordinatorHosts' => [], # localhost:8081
         'overlordHosts' => [] # localhost:8090
       }

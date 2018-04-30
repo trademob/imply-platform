@@ -19,7 +19,8 @@ cookbook_name = 'imply-platform'
 
 default[cookbook_name]['druid']['config']['jvm']['broker'] = {
   '-Xms' => '24g',
-  '-Xmx' => '24g'
+  '-Xmx' => '24g',
+  '-XX:MaxDirectMemorySize' => '8g'
 }
 
 default[cookbook_name]['druid']['config']['components']['broker'] = {
@@ -28,7 +29,9 @@ default[cookbook_name]['druid']['config']['components']['broker'] = {
   'druid.broker.http.numConnections' => 5,
   'druid.server.http.numThreads' => 40,
   'druid.processing.buffer.sizeBytes' => 536_870_912,
+  'druid.processing.numMergeBuffers' => 2,
   'druid.processing.numThreads' => 7,
   'druid.broker.cache.useCache' => 'false',
-  'druid.broker.cache.populateCache' => 'false'
+  'druid.broker.cache.populateCache' => 'false',
+  'druid.sql.enable' => true
 }

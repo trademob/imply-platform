@@ -30,8 +30,4 @@ describe 'Imply query' do
   it 'has Druid Broker listening on correct port' do
     expect(port(8082)).to be_listening
   end
-
-  describe file('/var/opt/imply/log/broker.log') do
-    its(:content) { should contain 'Started @' }
-  end
 end

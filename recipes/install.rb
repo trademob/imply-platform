@@ -44,7 +44,6 @@ tmp = node[cookbook_name]['tmp_dir']
 dirs << tmp
 components_per_role = node[cookbook_name]['components_per_role']
 dirs += components_per_role.values.flatten.uniq.map { |c| "#{tmp}/#{c}" }
-dirs << node[cookbook_name]['log_dir']
 
 dirs.each do |dir|
   directory dir do

@@ -13,6 +13,15 @@
         "user": {
           "login": "root"
         }
+      },
+      "druid": {
+        "config": {
+          "common_runtime_properties": {
+            "druid.metadata.storage.connector.user": "root",
+            "druid.storage.storageDirectory": "/data/druid-storage",
+            "druid.indexer.logs.directory": "/data/druid-indexing-logs"
+          }
+        }
       }
     }
   },

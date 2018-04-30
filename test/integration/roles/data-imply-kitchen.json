@@ -6,6 +6,39 @@
       "data": {
         "role": "data-imply-kitchen",
         "size": 2
+      },
+      "druid": {
+        "config": {
+          "jvm": {
+            "historical": {
+              "-Xms": "256m",
+              "-Xmx": "256m",
+              "-XX:MaxDirectMemorySize": "768m"
+            },
+            "middleManager": {
+              "-Xms": "64m",
+              "-Xmx": "64m"
+            }
+          },
+          "components": {
+            "historical": {
+              "druid.server.http.numThreads": 12,
+              "druid.coordinator.startDelay": "PT10S",
+              "druid.processing.buffer.sizeBytes": 100000000,
+              "druid.processing.numMergeBuffers": 1,
+              "druid.processing.numThreads": 2,
+              "druid.cache.sizeInBytes": 10000000
+            },
+            "middleManager": {
+              "druid.worker.capacity": 2,
+              "druid.indexer.runner.javaOpts": "-Xms256m -Xmx256m",
+              "druid.server.http.numThreads": 12,
+              "druid.processing.buffer.sizeBytes": 20000000,
+              "druid.processing.numMergeBuffers": 1,
+              "druid.processing.numThreads": 1
+            }
+          }
+        }
       }
     }
   },

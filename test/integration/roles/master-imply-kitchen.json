@@ -6,6 +6,29 @@
       "master": {
         "role": "master-imply-kitchen",
         "size": 2
+      },
+      "druid": {
+        "config": {
+          "jvm": {
+            "coordinator": {
+              "-Xms": "256m",
+              "-Xmx": "256m"
+            },
+            "overlord": {
+              "-Xms": "128m",
+              "-Xmx": "128m"
+            }
+          },
+          "components": {
+            "coordinator": {
+              "druid.coordinator.startDelay": "PT10S",
+              "druid.coordinator.period": "PT5S"
+            },
+            "overlord": {
+              "druid.indexer.queue.startDelay": "PT5S"
+            }
+          }
+        }
       }
     }
   },

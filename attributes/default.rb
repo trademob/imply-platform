@@ -59,8 +59,6 @@ default[cookbook_name]['prefix_bin'] = '/opt/bin'
 # var dir
 default[cookbook_name]['var_dir'] = '/var/opt/imply'
 var = node[cookbook_name]['var_dir']
-# Where to log
-default[cookbook_name]['log_dir'] = "#{var}/log"
 # Tmp dir
 default[cookbook_name]['tmp_dir'] = "#{var}/tmp"
 
@@ -97,26 +95,33 @@ default[cookbook_name]['database_creation_retry_delay'] = nil
 
 # Druid common properties
 default[cookbook_name]['druid']['config']['common_runtime_properties'] = {
+  # Extensions
   'druid.extensions.directory' => 'dist/druid/extensions',
   'druid.extensions.hadoopDependenciesDir' => 'dist/druid/hadoop-dependencies',
-  'druid.extensions.loadList' => '["mysql-metadata-storage"]',
+  'druid.extensions.loadList' =>
+    '["druid-parser-route","mysql-metadata-storage"]',
+  # Logging
   'druid.startup.logging.logProperties' => 'true',
+  # Zookeeper
   'druid.zk.service.host' => '',
   'druid.zk.paths.base' => '/druid',
+  # Metadata storage
   'druid.metadata.storage.type' => 'mysql',
   'druid.metadata.storage.connector.user' =>
     node[cookbook_name]['metadata']['user']['login'],
+  # Deep storage
   'druid.storage.type' => 'local',
   'druid.storage.storageDirectory' => "#{var}/druid/segments",
+  # Indexing service logs
   'druid.indexer.logs.type' => 'file',
   'druid.indexer.logs.directory' => "#{var}/druid/indexing-logs",
-  'druid.indexer.task.chathandler.type' => 'announce',
+  # Service discovery
   'druid.selectors.indexing.serviceName' => 'druid/overlord',
   'druid.selectors.coordinator.serviceName' => 'druid/coordinator',
-  'druid.monitoring.monitors' => '["com.metamx.metrics.JvmMonitor"]',
-  'druid.emitter' => 'noop',
-  'druid.emitter.logging.logLevel' => 'debug',
-  'druid.sql.enable' => true
+  # Monitoring
+  'druid.monitoring.monitors' => '["io.druid.java.util.metrics.JvmMonitor"]',
+  'druid.emitter' => 'logging',
+  'druid.emitter.logging.logLevel' => 'debug'
 }
 
 # Druid JVM common properties (will be merge in each components)
@@ -125,49 +130,20 @@ default[cookbook_name]['druid']['config']['jvm']['common'] = {
   '-Dfile.encoding' => 'UTF-8',
   '-Djava.io.tmpdir' => "#{node[cookbook_name]['tmp_dir']}/%<component>s",
   '-Djava.util.logging.manager' => 'org.apache.logging.log4j.jul.LogManager',
-  '-Dlog4j2.dir' => node[cookbook_name]['log_dir'],
-  '-Dlog4j2.appender' => 'file',
-  '-Dservice' => '%<component>s'
+  '-Dderby.stream.error.file' => "#{var}/%<component>s/derby.log"
 }
 
 # Log4j2 config for all components
 default[cookbook_name]['druid']['config']['log4j2'] = {
   'Configuration' => [{
-    'monitorInterval' => '60',
-    'Properties' => [{
-      'Property' =>
-      [
-        {
-          'name' => 'logfile.path',
-          'content' => '${sys:log4j2.dir}/${sys:service}.log'
-        }
-      ]
-    }],
+    'status' => 'WARN',
     'Appenders' => [{
-      'RollingFile' =>
-      [
-        {
-          'name' => 'file',
-          'fileName' => '${logfile.path}',
-          'filePattern' => '${logfile.path}.%i.gz',
-          'PatternLayout' => [{
-            'pattern' => ['%d{ISO8601} %p [%t] %c - %m%n']
-          }],
-          'Policies' => [{
-            'SizeBasedTriggeringPolicy' => [{
-              'size' => '1 GB'
-            }]
-          }],
-          'DefaultRolloverStrategy' => [{
-            'max' => '9'
-          }]
-        }
-      ],
       'Console' => [
         {
-          'name' => 'console',
+          'name' => 'Console',
+          'target' => 'SYSTEM_OUT',
           'PatternLayout' => [{
-            'pattern' => ['%d{ISO8601} %p [%t] %c - %m%n']
+            'pattern' => '%d{ISO8601} %p [%t] %c - %m%n'
           }]
         }
       ]
@@ -175,7 +151,7 @@ default[cookbook_name]['druid']['config']['log4j2'] = {
     'Loggers' => [{
       'Root' => [{
         'level' => 'info',
-        'AppenderRef' => [{ 'ref' => '${sys:log4j2.appender}' }]
+        'AppenderRef' => [{ 'ref' => 'Console' }]
       }]
     }]
   }]
