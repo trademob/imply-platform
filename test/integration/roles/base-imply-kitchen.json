@@ -4,10 +4,10 @@
   "default_attributes": {
     "imply-platform": {
       "zookeeper": {
-        "hosts": "zookeeper-imply-centos-7"
+        "hosts": "zk-galera-imply-centos-7"
       },
       "database": {
-        "hosts": "galera-imply-centos-7"
+        "hosts": "zk-galera-imply-centos-7"
       },
       "metadata": {
         "user": {
