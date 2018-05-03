@@ -1,0 +1,18 @@
+{
+  "id": "full-imply-centos-7",
+  "run_list": [
+    "role[master-imply-kitchen]",
+    "role[data-imply-kitchen]",
+    "role[query-imply-kitchen]",
+    "role[client-imply-kitchen]"
+  ],
+  "automatic": {
+    "fqdn": "full-imply-centos-7",
+    "roles": [
+      "master-imply-kitchen",
+      "data-imply-kitchen",
+      "query-imply-kitchen",
+      "client-imply-kitchen"
+    ]
+  }
+}

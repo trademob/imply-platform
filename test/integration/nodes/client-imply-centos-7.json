@@ -1,0 +1,8 @@
+{
+  "id": "client-imply-centos-7",
+  "run_list": ["role[client-imply-kitchen]"],
+  "automatic": {
+    "fqdn": "client-imply-centos-7",
+    "roles": ["client-imply-kitchen"]
+  }
+}

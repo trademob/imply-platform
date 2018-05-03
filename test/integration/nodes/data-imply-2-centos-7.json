@@ -1,8 +1,0 @@
-{
-  "id": "data-imply-2-centos-7",
-  "run_list": ["role[data-imply-kitchen]"],
-  "automatic": {
-    "fqdn": "data-imply-2-centos-7",
-    "roles": ["data-imply-kitchen"]
-  }
-}

@@ -5,7 +5,7 @@
     "imply-platform": {
       "client": {
         "role": "client-imply-kitchen",
-        "size": 1
+        "size": 2
       },
       "druid": {
         "config": {
@@ -14,9 +14,9 @@
               "initialSettings": {
                 "connections": {
                   "druid": {
-                    "host": "query-imply-1-centos-7:8082",
-                    "coordinatorHosts": ["master-imply-1-centos-7:8081"],
-                    "overlordHosts": ["master-imply-1-centos-7:8090"]
+                    "host": "query-imply-centos-7:8082",
+                    "coordinatorHosts": ["master-imply-centos-7:8081"],
+                    "overlordHosts": ["master-imply-centos-7:8090"]
                   }
                 }
               }

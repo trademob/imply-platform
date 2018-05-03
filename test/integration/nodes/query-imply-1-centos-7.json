@@ -1,8 +1,0 @@
-{
-  "id": "query-imply-1-centos-7",
-  "run_list": ["role[query-imply-kitchen]"],
-  "automatic": {
-    "fqdn": "query-imply-1-centos-7",
-    "roles": ["query-imply-kitchen"]
-  }
-}

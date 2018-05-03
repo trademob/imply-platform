@@ -1,8 +1,0 @@
-{
-  "id": "master-imply-2-centos-7",
-  "run_list": ["role[master-imply-kitchen]"],
-  "automatic": {
-    "fqdn": "master-imply-2-centos-7",
-    "roles": ["master-imply-kitchen"]
-  }
-}

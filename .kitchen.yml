@@ -41,6 +41,8 @@ provisioner:
   always_update_cookbooks: true
   product_name: chef
   install_strategy: skip
+  data_bags_path: 'test/integration/default/data_bags'
+  encrypted_data_bag_secret_key_path: 'test/integration/default/secret_key'
 
 platforms:
   - name: centos-7
@@ -51,13 +53,11 @@ suites:
   # Just un data volume to be shared
   - name: data-volume-imply
     driver:
-      image: sbernard/centos-chef -m 100m
-      volume: /data
+      image: sbernard/centos-chef
+      volume: /data -m 100m
 
   # Utility container, with zookeeper and galera
   - name: zk-galera-imply
-    data_bags_path: 'test/integration/default/data_bags'
-    encrypted_data_bag_secret_key_path: 'test/integration/default/secret_key'
     driver:
       network: kitchen -m 384m # just for the -m option
     run_list:
@@ -71,14 +71,26 @@ suites:
         hosts: zk-galera-imply-centos-7
         package_retries: 1
 
-  # Generate different types of nodes
-<% {
-  'master' => 2, 'data' => 2, 'query' => 2, 'client' => 1
-  }.each do |name, n| %>
-  <% ("1".."#{n}").each do |i| %>
-  - name: <%= name %>-imply-<%= i %>
-    data_bags_path: 'test/integration/default/data_bags'
-    encrypted_data_bag_secret_key_path: 'test/integration/default/secret_key'
+  # A node with everything to test if we can stack the whole stack
+  - name: full-imply
+    driver:
+      volumes_from: data-volume-imply-centos-7
+    run_list:
+      - role[master-imply-kitchen]
+      - role[data-imply-kitchen]
+      - role[query-imply-kitchen]
+      - role[client-imply-kitchen]
+      - recipe[test-imply::deploy_files]
+    attributes:
+      imply-platform:
+        auto_restart: true
+        package_retries: 1
+        database_creation_retries: 20
+        database_creation_retry_delay: 10
+
+  # Generate a different node for each type
+  <% %w[master data query client].each do |name| %>
+  - name: <%= name %>-imply
     driver:
       volumes_from: data-volume-imply-centos-7
     run_list:
@@ -91,4 +103,3 @@ suites:
         database_creation_retries: 20
         database_creation_retry_delay: 10
   <% end %>
-<% end %>
