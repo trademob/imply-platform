@@ -11,12 +11,12 @@
         "config": {
           "jvm": {
             "coordinator": {
-              "-Xms": "256m",
-              "-Xmx": "256m"
-            },
-            "overlord": {
               "-Xms": "128m",
               "-Xmx": "128m"
+            },
+            "overlord": {
+              "-Xms": "64m",
+              "-Xmx": "64m"
             }
           },
           "components": {
