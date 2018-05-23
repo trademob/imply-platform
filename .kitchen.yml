@@ -59,7 +59,7 @@ suites:
   # Utility container, with zookeeper and galera
   - name: zk-galera-imply
     driver:
-      network: kitchen -m 384m # just for the -m option
+      network: kitchen -m 512m # just for the -m option
     run_list:
       - recipe[zookeeper-platform]
       - recipe[galera-platform]
@@ -85,7 +85,7 @@ suites:
       imply-platform:
         auto_restart: true
         package_retries: 1
-        database_creation_retries: 20
+        database_creation_retries: 60
         database_creation_retry_delay: 10
 
   # Generate a different node for each type
@@ -100,6 +100,6 @@ suites:
       imply-platform:
         auto_restart: true
         package_retries: 1
-        database_creation_retries: 20
+        database_creation_retries: 60
         database_creation_retry_delay: 10
   <% end %>
