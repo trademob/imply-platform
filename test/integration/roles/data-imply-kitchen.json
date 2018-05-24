@@ -11,27 +11,31 @@
         "config": {
           "jvm": {
             "historical": {
-              "-Xms": "128m",
-              "-Xmx": "128m",
-              "-XX:MaxDirectMemorySize": "384m"
+              "-Xms": "32m",
+              "-Xmx": "32m",
+              "-XX:MaxDirectMemorySize": "32m",
+              "-Xint": "",
+              "-XshowSettings:": "all"
             },
             "middleManager": {
               "-Xms": "32m",
-              "-Xmx": "32m"
+              "-Xmx": "32m",
+              "-Xint": "",
+              "-XshowSettings:": "all"
             }
           },
           "components": {
             "historical": {
               "druid.server.http.numThreads": 12,
               "druid.coordinator.startDelay": "PT10S",
-              "druid.processing.buffer.sizeBytes": 20000000,
+              "druid.processing.buffer.sizeBytes": 10000000,
               "druid.processing.numMergeBuffers": 1,
-              "druid.processing.numThreads": 2,
+              "druid.processing.numThreads": 1,
               "druid.cache.sizeInBytes": 5000000
             },
             "middleManager": {
               "druid.worker.capacity": 2,
-              "druid.indexer.runner.javaOpts": "-Xms192m -Xmx192m",
+              "druid.indexer.runner.javaOpts": "-Xms192m -Xmx192m -Xint",
               "druid.server.http.numThreads": 12,
               "druid.processing.buffer.sizeBytes": 10000000,
               "druid.processing.numMergeBuffers": 1,

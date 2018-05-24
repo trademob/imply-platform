@@ -41,7 +41,7 @@ describe 'Imply master' do
   it 'is able to launch indexing task' do
     proxy = 'http_proxy="" HTTP_PROXY=""'
     post_index = 'no_proxy=localhost,.kitchen /opt/imply/bin/post-index-task'
-    post_parameters = '--url http://localhost:8090 --submit-timeout 600'
+    post_parameters = '--url http://$(hostname):8090 --submit-timeout 600'
     index_task = '--file /opt/imply/tests/test-index-task.json'
     result = `#{proxy} #{post_index} #{post_parameters} #{index_task} 2>&1`
     expect(result).to include('Task finished with status: SUCCESS')

@@ -19,10 +19,10 @@ require 'serverspec'
 set :backend, :exec
 
 def wait_service(service, port)
-  (1..10).each do |try|
+  (1..20).each do |try|
     out = `ss -tunl | grep -- :#{port.to_s}`
     break unless out.empty?
-    puts "Waiting to #{service} to launch… (##{try}/10)"
+    puts "Waiting to #{service} to launch… (##{try}/20)"
     sleep(3)
   end
 end

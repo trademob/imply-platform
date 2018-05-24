@@ -11,15 +11,16 @@
         "config": {
           "jvm": {
             "broker": {
-              "-Xms": "128m",
-              "-Xmx": "128m",
-              "-XX:MaxDirectMemorySize": "384m"
-            }
+              "-Xms": "48m",
+              "-Xmx": "48m",
+              "-XX:MaxDirectMemorySize": "48m",
+              "-Xint": "",
+              "-XshowSettings:": "all"            }
           },
           "components": {
             "broker": {
               "druid.server.http.numThreads": 12,
-              "druid.processing.buffer.sizeBytes": 20000000,
+              "druid.processing.buffer.sizeBytes": 10000000,
               "druid.processing.numThreads": 1
             }
           }
