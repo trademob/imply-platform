@@ -71,8 +71,8 @@ suites:
         hosts: zk-galera-helper-imply-centos-7
         package_retries: 1
 
- # Generate a different node for each type
-  <% { master: 500, data: 700, query: 400, client: 300 }.each do |name, ram| %>
+  # Generate a different node for each type
+  <% { master: 450, data: 650, query: 350 }.each do |name, ram| %>
   - name: <%= name %>-imply
     driver:
       volumes_from: volume-helper-imply-centos-7
@@ -87,6 +87,19 @@ suites:
         database_creation_retries: 60
         database_creation_retry_delay: 10
   <% end %>
+
+  # client (pivot) is a bit different
+  - name: client-imply
+    driver:
+      network: kitchen -m 250m # just for the -m option
+    run_list:
+      - role[client-imply-kitchen]
+      - recipe[test-imply::deploy_files]
+    attributes:
+      imply-platform:
+        auto_restart: true
+        package_retries: 2
+        java: ''
 
 # A node with everything to test if we can stack the whole stack
   - name: full-imply
