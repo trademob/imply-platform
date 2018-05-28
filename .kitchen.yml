@@ -51,13 +51,13 @@ platforms:
 
 suites:
   # Just un data volume to be shared
-  - name: volume-imply
+  - name: volume-helper-imply
     driver:
       image: sbernard/centos-chef
       volume: /data -m 100m
 
   # Utility container, with zookeeper and galera
-  - name: zk-galera-imply
+  - name: zk-galera-helper-imply
     driver:
       network: kitchen -m 400m # just for the -m option
     run_list:
@@ -68,14 +68,14 @@ suites:
         hosts: localhost
         package_retries: 1
       galera-platform:
-        hosts: zk-galera-imply-centos-7
+        hosts: zk-galera-helper-imply-centos-7
         package_retries: 1
 
  # Generate a different node for each type
   <% { master: 500, data: 700, query: 400, client: 300 }.each do |name, ram| %>
   - name: <%= name %>-imply
     driver:
-      volumes_from: volume-imply-centos-7
+      volumes_from: volume-helper-imply-centos-7
       network: kitchen -m <%= ram %>m # just for the -m option
     run_list:
       - role[<%= name %>-imply-kitchen]
@@ -91,7 +91,7 @@ suites:
 # A node with everything to test if we can stack the whole stack
   - name: full-imply
     driver:
-      volumes_from: volume-imply-centos-7
+      volumes_from: volume-helper-imply-centos-7
       network: kitchen -m 1400m --cap-add=SYS_PTRACE # just for the -m option
     run_list:
       - role[master-imply-kitchen]
