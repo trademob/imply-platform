@@ -71,7 +71,24 @@ suites:
         hosts: zk-galera-imply-centos-7
         package_retries: 1
 
-  # A node with everything to test if we can stack the whole stack
+ # Generate a different node for each type
+  <% { master: 500, data: 700, query: 400, client: 300 }.each do |name, ram| %>
+  - name: <%= name %>-imply
+    driver:
+      volumes_from: volume-imply-centos-7
+      network: kitchen -m <%= ram %>m # just for the -m option
+    run_list:
+      - role[<%= name %>-imply-kitchen]
+      - recipe[test-imply::deploy_files]
+    attributes:
+      imply-platform:
+        auto_restart: true
+        package_retries: 1
+        database_creation_retries: 60
+        database_creation_retry_delay: 10
+  <% end %>
+
+# A node with everything to test if we can stack the whole stack
   - name: full-imply
     driver:
       volumes_from: volume-imply-centos-7
@@ -88,20 +105,3 @@ suites:
         package_retries: 1
         database_creation_retries: 60
         database_creation_retry_delay: 10
-
-  # Generate a different node for each type
-  <% { master: 500, data: 700, query: 400, client: 300 }.each do |name, ram| %>
-  - name: <%= name %>-imply
-    driver:
-      volumes_from: volume-imply-centos-7
-      network: kitchen -m <%= ram %>m # just for the -m option
-    run_list:
-      - role[<%= name %>-imply-kitchen]
-      - recipe[test-imply::deploy_files]
-    attributes:
-      imply-platform:
-        auto_restart: true
-        package_retries: 1
-        database_creation_retries: 60
-        database_creation_retry_delay: 10
-  <% end %>
