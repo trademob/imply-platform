@@ -1,6 +1,6 @@
 -server
 <% @config.each do |key, value| %>
-  <% if key =~ /-Xm.*/ %>
+  <% if key =~ /-X[^X].*/ %>
 <%= key %><%= value %>
   <% else %>
 <%= key %>=<%= value %>
