@@ -58,8 +58,6 @@ suites:
 
   # Utility container, with zookeeper and galera
   - name: zk-galera-helper-imply
-    driver:
-      network: kitchen -m 400m # just for the -m option
     run_list:
       - recipe[zookeeper-platform]
       - recipe[galera-platform]
@@ -76,7 +74,6 @@ suites:
   - name: <%= name %>-imply
     driver:
       volumes_from: volume-helper-imply-centos-7
-      network: kitchen -m <%= ram %>m # just for the -m option
     run_list:
       - role[<%= name %>-imply-kitchen]
       - recipe[test-imply::deploy_files]
@@ -90,8 +87,6 @@ suites:
 
   # client (pivot) is a bit different
   - name: client-imply
-    driver:
-      network: kitchen -m 250m # just for the -m option
     run_list:
       - role[client-imply-kitchen]
       - recipe[test-imply::deploy_files]
@@ -105,7 +100,6 @@ suites:
   - name: full-imply
     driver:
       volumes_from: volume-helper-imply-centos-7
-      network: kitchen -m 1400m --cap-add=SYS_PTRACE # just for the -m option
     run_list:
       - role[master-imply-kitchen]
       - role[data-imply-kitchen]
