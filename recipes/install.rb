@@ -75,8 +75,11 @@ execute 'imply-platform:save_default_config' do
 end
 
 # Java packages are needed by imply, can install it with package
-java_package = node[cookbook_name]['java'][node['platform']]
-package java_package do
-  retries package_retries unless package_retries.nil?
-  not_if java_package.to_s.empty?
+java = node[cookbook_name]['java']
+java_package = java.to_s.empty? ? '' : java[node['platform']]
+unless java_package.to_s.empty?
+  package 'imply-platform: java' do
+    package_name java_package
+    retries package_retries unless package_retries.nil?
+  end
 end
