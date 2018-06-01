@@ -26,28 +26,29 @@ cookbook_name = 'imply-platform'
 # In the following bloc of 3 lines:
 # - role is the target role for the search
 # - unempty hosts deactivates search, it's the member list of the cluster
-# - size is the expected size of the searched cluster, ignored if hosts is used
+# - size is the expected size of the searched cluster, ignored if 0 or
+#   if hosts is used (it's ok to ignore it here as consensus is done externally
 
 default[cookbook_name]['master']['role'] = 'master-imply-platform'
 default[cookbook_name]['master']['hosts'] = []
-default[cookbook_name]['master']['size'] = 1
+default[cookbook_name]['master']['size'] = 0
 
 default[cookbook_name]['data']['role'] = 'data-imply-platform'
 default[cookbook_name]['data']['hosts'] = []
-default[cookbook_name]['data']['size'] = 1
+default[cookbook_name]['data']['size'] = 0
 
 default[cookbook_name]['query']['role'] = 'query-imply-platform'
 default[cookbook_name]['query']['hosts'] = []
-default[cookbook_name]['query']['size'] = 1
+default[cookbook_name]['query']['size'] = 0
 
 default[cookbook_name]['client']['role'] = 'client-imply-platform'
 default[cookbook_name]['client']['hosts'] = []
-default[cookbook_name]['client']['size'] = 1
+default[cookbook_name]['client']['size'] = 0
 
 default[cookbook_name]['zookeeper']['role'] = 'zookeeper-cluster'
 default[cookbook_name]['zookeeper']['hosts'] = []
-default[cookbook_name]['zookeeper']['size'] = 1
+default[cookbook_name]['zookeeper']['size'] = 0
 
 default[cookbook_name]['database']['role'] = 'mariadb-galera-cluster'
 default[cookbook_name]['database']['hosts'] = []
-default[cookbook_name]['database']['size'] = 1
+default[cookbook_name]['database']['size'] = 0
