@@ -16,6 +16,7 @@
 
 require 'spec_helper'
 
+# rubocop:disable Metrics/BlockLength
 describe 'Imply master' do
   %w[coordinator overlord].each do |service|
     it 'is running' do
@@ -43,7 +44,13 @@ describe 'Imply master' do
     post_index = 'no_proxy=localhost,.kitchen /opt/imply/bin/post-index-task'
     post_parameters = '--url http://$(hostname):8090 --submit-timeout 600'
     index_task = '--file /opt/imply/tests/test-index-task.json'
-    result = `#{proxy} #{post_index} #{post_parameters} #{index_task} 2>&1`
+    result = ''
+    (1..5).each do |_try|
+      result = `#{proxy} #{post_index} #{post_parameters} #{index_task} 2>&1`
+      break if result.include?('Task finished with status: SUCCESS')
+      sleep(10)
+    end
     expect(result).to include('Task finished with status: SUCCESS')
   end
 end
+# rubocop:enable Metrics/BlockLength
