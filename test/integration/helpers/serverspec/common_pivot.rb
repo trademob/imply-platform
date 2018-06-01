@@ -18,11 +18,11 @@ require 'spec_helper'
 require 'phantomjs'
 
 def wait_pivot_source(cmd)
-  (1..30).each do |try|
+  (1..60).each do |try|
     rasterize
     break if system(cmd)
-    puts "Waiting for pivot datasource… Try ##{try}/30, waiting 2s"
-    sleep(2)
+    puts "Waiting for pivot datasource… Try ##{try}/60, waiting 3s"
+    sleep(3)
   end
 end
 
