@@ -112,3 +112,15 @@ suites:
         package_retries: 1
         database_creation_retries: 60
         database_creation_retry_delay: 10
+        druid:
+          config:
+            components:
+              pivot:
+                initialSettings:
+                  connections:
+                    druid:
+                      host: full-imply-centos-7:8082
+                      coordinatorHosts:
+                        - full-imply-centos-7:8081
+                      overlordHosts:
+                        - full-imply-centos-7:8090

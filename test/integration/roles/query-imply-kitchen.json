@@ -4,8 +4,7 @@
   "default_attributes": {
     "imply-platform": {
       "query": {
-        "role": "query-imply-kitchen",
-        "size": 2
+        "role": "query-imply-kitchen"
       },
       "druid": {
         "config": {

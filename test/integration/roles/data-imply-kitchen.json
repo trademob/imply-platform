@@ -4,8 +4,7 @@
   "default_attributes": {
     "imply-platform": {
       "data": {
-        "role": "data-imply-kitchen",
-        "size": 2
+        "role": "data-imply-kitchen"
       },
       "druid": {
         "config": {
