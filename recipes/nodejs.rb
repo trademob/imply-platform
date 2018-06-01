@@ -14,15 +14,16 @@
 # limitations under the License.
 #
 
+package_retries = node[cookbook_name]['package_retries']
 # Set repository for nodejs installation needed by query imply service
 yum_repository 'nodesource' do
   description 'NodeJS repository'
   baseurl node[cookbook_name]['nodejs']['mirror']
   gpgkey node[cookbook_name]['nodejs']['gpgkey']
+  retries package_retries unless package_retries.nil?
   action :create
 end
 
-package_retries = node[cookbook_name]['package_retries']
 # Install nodejs
 package 'nodejs' do
   action :install
