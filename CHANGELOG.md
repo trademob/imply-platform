@@ -1,6 +1,50 @@
 Changelog
 =========
 
+4.0.0
+-----
+
+Main:
+
+- chore: handover maintenance to make.org
+- feat: update imply default version to 2.5.11
+  + set default config from imply 2.5
+  + enable sql in common config by default
+  + adapt pivot config and fix tests
+  + reduce memory used by each component
+  + update to latest package
+- feat: set default search sizes to 0
+- feat: can set owner/group/mode for storage dirs
+- feat: allow appending users to imply group
+- feat: save default configs before modifying them
+- fix: do not set retries if package\_retries is nil
+- fix: better regexp in jvm config to allow more opt
+- fix: java installation was difficult to deactivate
+
+Tests:
+
+- test: move driver config, set latest options
+- test: require foodcritic & rubocop in Gemfile
+- test: include .gitlab-ci.yml from test-cookbook
+- test: merge each node into a full-stack one, at the end
+- test: merge zk & galera and limit ram to 384mo
+- test: reduce memory used with agressive settings
+- test: increase database retries & give it more mem
+- test: set indexing timeout to 600s
+- test: add helper in "helper"-suite names
+- test: set client suite aside to deactivate java
+- test: add a retry opt on yum repository
+- test: increase timeout for services
+- test: retry indexing task multiple times
+
+Misc:
+
+- style(rubocop): fix %w-literals delimiters
+- style(rubocop): fix heredoc & token offenses
+- style(foodcritic): fix license & chef\_version
+- style: use cookbook\_name macro everywhere
+- docs: use karma for git format in contributing
+
 3.0.0
 -----
 
