@@ -6,7 +6,7 @@ description 'Install and configure Imply/druid'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 source_url 'https://gitlab.com/chef-platform/imply-platform'
 issues_url 'https://gitlab.com/chef-platform/imply-platform/issues'
-version '4.0.0'
+version '4.1.0'
 
 supports 'centos', '>= 7.1'
 
