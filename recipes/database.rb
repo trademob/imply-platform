@@ -22,8 +22,10 @@ database_type = common_properties['druid.metadata.storage.type']
 # Metadata credentials
 # Load password from encrypted data bag
 data_bag = node[cookbook_name]['data_bag']
-node.run_state[cookbook_name]['metadata_password'] =
-  data_bag_item(data_bag['name'], data_bag['item'])[data_bag['key']]
+if node.run_state[cookbook_name]['metadata_password'].nil?
+  node.run_state[cookbook_name]['metadata_password'] =
+    data_bag_item(data_bag['name'], data_bag['item'])[data_bag['key']]
+end
 
 # Default to 'druid' database
 db = node[cookbook_name]['metadata']['database']
