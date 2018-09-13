@@ -19,6 +19,7 @@ imply_home = node[cookbook_name]['prefix_home']
 config = node[cookbook_name]['druid']['config']
 path = "#{imply_home}/imply/conf/druid"
 
+node.run_state[cookbook_name] ||= {}
 unless node.run_state[cookbook_name]['metadata_servers'].nil?
   # Using members of DB cluster
   database_hosts = node.run_state[cookbook_name]['metadata_servers']

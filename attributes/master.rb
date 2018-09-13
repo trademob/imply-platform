@@ -29,6 +29,7 @@ default[cookbook_name]['druid']['config']['jvm']['overlord'] = {
 
 default[cookbook_name]['druid']['config']['components']['coordinator'] = {
   'druid.service' => 'druid/coordinator',
+  'druid.host' => node['ipaddress'],
   'druid.port' => 8081,
   'druid.coordinator.startDelay' => 'PT30S',
   'druid.coordinator.period' => 'PT30S'
@@ -36,6 +37,7 @@ default[cookbook_name]['druid']['config']['components']['coordinator'] = {
 
 default[cookbook_name]['druid']['config']['components']['overlord'] = {
   'druid.service' => 'druid/overlord',
+  'druid.host' => node['ipaddress'],
   'druid.port' => 8090,
   'druid.indexer.queue.startDelay' => 'PT30S',
   'druid.indexer.runner.type' => 'remote',
